@@ -1,0 +1,27 @@
+﻿<Window x:Class="ST10446806_PROG6212_POEPART1.CoordinatorWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        Title="Coordinator Review" Height="400" Width="500">
+
+
+    <StackPanel Margin="10">
+        <TextBlock Text="Pending Claims" FontSize="16" Margin="5"/>
+
+       
+        <ListBox Height="250">
+
+        
+        <ListBoxItem>
+            <StackPanel Orientation="Horizontal" Margin="5" >
+                <TextBlock Text="Claim ID: 1 | 13h | R4550 | Submission pending" VerticalAlignment="Center" Width="280"/>
+                <Button Content="Approve" Width="70" Margin="5,0"/>
+                <Button Content="Reject" Width="70" Margin="5,0"/>
+            </StackPanel>
+        </ListBoxItem>
+
+    </ListBox>
+
+       
+        <Button Content="Close" Width="100" Height="30" Margin="0,20,0,0" Click="CloseButton"/>
+    </StackPanel>
+</Window>

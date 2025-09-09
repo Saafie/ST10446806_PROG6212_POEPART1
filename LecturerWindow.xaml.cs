@@ -17,5 +17,9 @@ namespace ST10446806_PROG6212_POEPART1
         {
             InitializeComponent();
         }
+        private void CloseButton(object sender, RoutedEventArgs i )
+        {
+            this.Close();
+        }
     }
 }

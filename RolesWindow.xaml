@@ -1,0 +1,21 @@
+﻿<Window x:Class="ST10446806_PROG6212_POEPART1.RolesWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:local="clr-namespace:ST10446806_PROG6212_POEPART1"
+        mc:Ignorable="d"
+        Title="Roles Window" Height="220" Width="250">
+
+    <Canvas x:Name="CircleCanvas" Background="#747FB8" RenderTransformOrigin="0.5,0.5" Margin="0,0,-1,0">
+     
+        <RadioButton x:Name="LecturerButton" Content="Lecturer" Width="80" Height="30" Click="ClickLecturer" Canvas.Left="62" Canvas.Top="56"/>
+        <RadioButton x:Name="CoordinatorButton" Content="Coordinator" Width="100" Height="30" Canvas.Top="125"  Click="ClickCoordinator" Canvas.Left="60"/>
+
+    </Canvas>
+
+</Window>
+
+
+
+
