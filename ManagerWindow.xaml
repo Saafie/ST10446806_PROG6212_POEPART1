@@ -7,8 +7,32 @@
         <TextBlock Text="Pending Claims" FontSize="16" Margin="5"/>
 
         <ListBox  Height="250" >
-  
+      
+            <ListBoxItem>
+                <StackPanel Orientation="Horizontal" Margin="5" >
+                    <TextBlock Text="Claim ID: 1 | 13h | R4550 | Approved by Manager" VerticalAlignment="Center" Width="280"/>
+                    
+                </StackPanel>
+            </ListBoxItem>
+
+            <ListBoxItem>
+                <StackPanel Orientation="Horizontal" Margin="5" >
+                    <TextBlock Text="Claim ID: 2 | 2h | R4550 | Rejected by Coordinator" VerticalAlignment="Center" Width="280"/>
+                </StackPanel>
+            </ListBoxItem>
+
+            <ListBoxItem>
+
+                <StackPanel Orientation="Horizontal" Margin="5">
+                    <TextBlock Text="Claim ID: 3 | 2 | R750 | Approved by Coordinator" VerticalAlignment="Center" Width="280"/>
+                    <Button Content="Approve" Width="70" Margin="5,0"/>
+                    <Button Content="Reject" Width="70" Margin="5,0"/>
+                </StackPanel>
+            </ListBoxItem>
+
+
         </ListBox>
+        
 
         <Button Content="Close" Width="100" Height="30" Margin="0,20,0,0" Click="CloseButton"/>
     </StackPanel>

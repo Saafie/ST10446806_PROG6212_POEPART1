@@ -13,10 +13,23 @@
         
         <ListBoxItem>
             <StackPanel Orientation="Horizontal" Margin="5" >
-                <TextBlock Text="Claim ID: 1 | 13h | R4550 | Submission pending" VerticalAlignment="Center" Width="280"/>
+                <TextBlock Text="Claim ID: 1 | 13h | R4550 | Submission Pending" VerticalAlignment="Center" Width="280"/>
                 <Button Content="Approve" Width="70" Margin="5,0"/>
                 <Button Content="Reject" Width="70" Margin="5,0"/>
-            </StackPanel>
+                    </StackPanel>
+            </ListBoxItem>
+
+            <ListBoxItem>
+                <StackPanel Orientation="Horizontal" Margin="5" >
+                    <TextBlock Text="Claim ID: 2 | 2h | R4550 | Rejected by Coordinator" VerticalAlignment="Center" Width="280"/>
+                </StackPanel>
+            </ListBoxItem>
+
+            <ListBoxItem>
+       
+                <StackPanel Orientation="Horizontal" Margin="5">
+                    <TextBlock Text="Claim ID: 3 | 2 | R750 | Approved by coordinator" VerticalAlignment="Center" Width="280"/>
+                </StackPanel>
         </ListBoxItem>
 
     </ListBox>

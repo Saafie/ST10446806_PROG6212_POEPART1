@@ -17,7 +17,28 @@
         <Button Content="Upload Supporting Document" Width="200" Height="25" HorizontalAlignment="Left"/>
         <Button Content="Submit Claim" Width="200" Height="35" Margin="15"/>
         <TextBlock Text="My Claims" FontSize="16" Margin="2"/>
-        <ListBox x:Name="ListofClaims" Height="210" />
-        <Button Content="Close" Width="90" Height="30" Margin="0,10,0,0" Click="CloseButton"/>
+        
+        <ListBox x:Name="ListofClaims" Height="210" >
+        <ListBoxItem>
+            <StackPanel Orientation="Horizontal" Margin="5" >
+                    <TextBlock Text="Claim ID: 1 | 13h | R4550 | Submission Pending" VerticalAlignment="Center" Width="280"/>
+                </StackPanel>
+        </ListBoxItem>
+
+        <ListBoxItem>
+            <StackPanel Orientation="Horizontal" Margin="5" >
+                <TextBlock Text="Claim ID: 2 | 2h | R4550 | Rejected by Coordinator" VerticalAlignment="Center" Width="280"/>
+            </StackPanel>
+        </ListBoxItem>
+
+        <ListBoxItem>
+
+            <StackPanel Orientation="Horizontal" Margin="5">
+                <TextBlock Text="Claim ID: 3 | 2 | R750 | Approved by coordinator" VerticalAlignment="Center" Width="280"/>
+            </StackPanel>
+        </ListBoxItem>
+        </ListBox>
+
+            <Button Content="Close" Width="90" Height="30" Margin="0,10,0,0" Click="CloseButton"/>
     </StackPanel>
 </Window>
