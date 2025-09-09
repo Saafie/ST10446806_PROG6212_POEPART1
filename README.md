@@ -24,3 +24,13 @@ It is similar to the Coordinator window, it will have the claims displayed where
 
 changes to Roles window
 a cirlcle was added to be clicked for manager, a method was added so when manager is clicked is will lead to the manager window, the circles also colour was added.
+
+4th commit
+Lecturer, coordinator and manager window all got examples like this, the coordinator and manager window just has one example that allows approval or rejection.
+Claim ID: 1 | 13h | R4550 | Submission Pending
+    
+Claim ID: 2 | 2h | R4550 | Rejected by Coordinator
+
+Claim ID: 3 | 2 | R750 | Approved by coordinator
+The time lines of the examples arent 100% correct its just to show what would happen if the prototype had functionality.
+so the my claims in the lecturer window will give the status update of the claims.
