@@ -1,0 +1,23 @@
+﻿<Window x:Class="ST10446806_PROG6212_POEPART1.LecturerWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:local="clr-namespace:ST10446806_PROG6212_POEPART1"
+        mc:Ignorable="d"
+        Title="Lecturer Claims" Height="500" Width="600">
+    <StackPanel Margin="10">
+        <TextBlock Text="Submit New Claim" FontSize="16" Margin="5"/>
+        <TextBlock Text="Hourly rates: 350 " Width="152" Margin="5,0,450,0"/>
+        <StackPanel Orientation="Horizontal" Margin="5">
+            
+            <TextBlock Text="Hours: " Width="53"/>
+            <TextBox Name="HoursBox" Width="100"/>
+        </StackPanel> 
+        <Button Content="Upload Supporting Document" Width="200" Height="25" HorizontalAlignment="Left"/>
+        <Button Content="Submit Claim" Width="200" Height="35" Margin="15"/>
+        <TextBlock Text="My Claims" FontSize="16" Margin="2"/>
+        <ListBox x:Name="ClaimList" Height="210" />
+        <Button Content="Close" Width="100" Height="30" Margin="0,10,0,0"/>
+    </StackPanel>
+</Window>
