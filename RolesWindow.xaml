@@ -5,13 +5,13 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:ST10446806_PROG6212_POEPART1"
         mc:Ignorable="d"
-        Title="Roles Window" Height="220" Width="250">
+        Title="Roles Window" Height="220" Width="250" WindowStartupLocation="CenterScreen">
 
     <Canvas x:Name="CircleCanvas" Background="#747FB8" RenderTransformOrigin="0.5,0.5" Margin="0,0,-1,0">
-     
-        <RadioButton x:Name="LecturerButton" Content="Lecturer" Width="80" Height="30" Click="ClickLecturer" Canvas.Left="62" Canvas.Top="56"/>
-        <RadioButton x:Name="CoordinatorButton" Content="Coordinator" Width="100" Height="30" Canvas.Top="125"  Click="ClickCoordinator" Canvas.Left="60"/>
 
+        <RadioButton Background="#CFD6FF" x:Name="LecturerButton" Content="Lecturer" Width="80" Height="30" Click="ClickLecturer" Canvas.Left="62" Canvas.Top="39" HorizontalAlignment="Center" VerticalAlignment="Top"/>
+        <RadioButton Background="#CFD6FF" x:Name="CoordinatorButton" Content="Coordinator" Width="100" Height="30" Canvas.Top="87"  Click="ClickCoordinator" Canvas.Left="62" HorizontalAlignment="Center" VerticalAlignment="Top"/>
+        <RadioButton Background="#CFD6FF" x:Name="ManagerButton" Content="Manager" Width="100" Height="30" Canvas.Top="135"  Click="ClickManager" Canvas.Left="62" HorizontalAlignment="Left" VerticalAlignment="Top"/>
     </Canvas>
 
 </Window>
