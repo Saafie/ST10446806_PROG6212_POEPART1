@@ -5,40 +5,56 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:ST10446806_PROG6212_POEPART1"
         mc:Ignorable="d"
-        Title="Lecturer Claims" Height="500" Width="600">
+        Title="Lecturer Claims" Height="500" Width="600"
+        WindowStartupLocation="CenterScreen" Background="#FFC0CB">
+
+    <Window.Resources>
+        <!-- used to create fake data for the claimList -->
+        <XmlDataProvider x:Key="ClaimsFakeData" XPath="Claims">
+            <x:XData>
+                <Claims xmlns="">
+                    <!--This displays the data for the claims-->
+                    <Claim ClaimID="1" TotalHours="13" Amount="4550" Status="Submission Pending" DateSubmission="09/09/2025"/>
+                    <Claim ClaimID="2" TotalHours="8" Amount="2800" Status="Rejected by Coordinator" DateSubmission="09/09/2025"/>
+                    <Claim ClaimID="3" TotalHours="2" Amount="750" Status="Approved by Manager" DateSubmission="09/09/2025"/>
+                </Claims>
+            </x:XData>
+        </XmlDataProvider>
+    </Window.Resources>
+
     <StackPanel Margin="10">
-        <TextBlock Text="Submit New Claim" FontSize="16" Margin="5"/>
+        <TextBlock Text="Submit New Claim" FontSize="16" FontWeight="DemiBold" Margin="5"/>
         <TextBlock Text="Hourly rates: 350 " Width="152" Margin="5,0,450,0"/>
+
         <StackPanel Orientation="Horizontal" Margin="5">
-            
             <TextBlock Text="Hours: " Width="53"/>
-            <TextBox Name="HoursBox" Width="100"/>
-        </StackPanel> 
-        <Button Content="Upload Supporting Document" Width="200" Height="25" HorizontalAlignment="Left"/>
-        <Button Content="Submit Claim" Width="200" Height="35" Margin="15"/>
-        <TextBlock Text="My Claims" FontSize="16" Margin="2"/>
-        
-        <ListBox x:Name="ListofClaims" Height="210" >
-        <ListBoxItem>
-            <StackPanel Orientation="Horizontal" Margin="5" >
-                    <TextBlock Text="Claim ID: 1 | 13h | R4550 | Submission Pending" VerticalAlignment="Center" Width="280"/>
-                </StackPanel>
-        </ListBoxItem>
+            <TextBox Name="HoursBox" Width="100" Background="#FFF0F2"/>
+        </StackPanel>
 
-        <ListBoxItem>
-            <StackPanel Orientation="Horizontal" Margin="5" >
-                <TextBlock Text="Claim ID: 2 | 2h | R4550 | Rejected by Coordinator" VerticalAlignment="Center" Width="280"/>
-            </StackPanel>
-        </ListBoxItem>
+        <Button Content="Upload Supporting Document" Width="200" Height="25" HorizontalAlignment="Left" Background="#FFF0F2"/>
+        <Button Content="Submit Claim" Width="200" Height="35" Margin="15" Background="#FFF0F2"/>
 
-        <ListBoxItem>
+        <TextBlock Text="My Claims" FontSize="16" FontWeight="DemiBold" Margin="2"/>
 
-            <StackPanel Orientation="Horizontal" Margin="5">
-                <TextBlock Text="Claim ID: 3 | 2 | R750 | Approved by coordinator" VerticalAlignment="Center" Width="280"/>
-            </StackPanel>
-        </ListBoxItem>
-        </ListBox>
+        <!-- This Binds the Listview to the ClaimsFakeData (XmlDataProvider)-->
+        <ListView x:Name="ClaimList"
+                  ItemsSource="{Binding Source={StaticResource ClaimsFakeData}, XPath=Claim}"
+                  Height="200" Background="#FFF0F2" Margin="0,10,0,0">
+            
+            <ListView.View>
+                <GridView>
+                    <!--This is the headings for the columns -->
+                    <GridViewColumn Header="ID" Width="50" DisplayMemberBinding="{Binding XPath=@ClaimID}" />
+                    <GridViewColumn Header="Hours" Width="80" DisplayMemberBinding="{Binding XPath=@TotalHours}" />
+                    <GridViewColumn Header="Amount (R)" Width="100" DisplayMemberBinding="{Binding XPath=@Amount}" />
+                    <GridViewColumn Header="Status" Width="150" DisplayMemberBinding="{Binding XPath=@Status}" />
+                    <GridViewColumn Header="Date" Width="120" DisplayMemberBinding="{Binding XPath=@DateSubmission}" />
+                </GridView>
+            </ListView.View>
+        </ListView>
 
-            <Button Content="Close" Width="90" Height="30" Margin="0,10,0,0" Click="CloseButton"/>
+        <!-- This is the Close button -->
+        <Button Content="Close" Width="90" Height="30" Margin="0,10,0,0"
+                Click="CloseButton" Background="#FFF0F2"/>
     </StackPanel>
 </Window>

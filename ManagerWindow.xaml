@@ -1,40 +1,44 @@
 ﻿<Window x:Class="ST10446806_PROG6212_POEPART1.ManagerWindow"
         xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
-        Title="Manager Review" Height="400" Width="500">
+        Title="Manager Review" Height="400" Width="500"
+        WindowStartupLocation="CenterScreen" Background="#D4D4FA">
 
     <StackPanel Margin="10">
         <TextBlock Text="Pending Claims" FontSize="16" Margin="5"/>
 
-        <ListBox  Height="250" >
-      
+        <ListBox  Height="250" Background= "#EBEBFF">
+      <!--shows the list of claims in the list box-->
+            <!--1st Claim-->
             <ListBoxItem>
                 <StackPanel Orientation="Horizontal" Margin="5" >
                     <TextBlock Text="Claim ID: 1 | 13h | R4550 | Approved by Manager" VerticalAlignment="Center" Width="280"/>
                     
                 </StackPanel>
             </ListBoxItem>
-
+            
+            <!--2nd claim-->
             <ListBoxItem>
                 <StackPanel Orientation="Horizontal" Margin="5" >
-                    <TextBlock Text="Claim ID: 2 | 2h | R4550 | Rejected by Coordinator" VerticalAlignment="Center" Width="280"/>
+                    <TextBlock Text="Claim ID: 2 | 8h | R2800 | Rejected by Coordinator" VerticalAlignment="Center" Width="280"/>
                 </StackPanel>
             </ListBoxItem>
 
+            <!--3rd Claim-->
             <ListBoxItem>
 
                 <StackPanel Orientation="Horizontal" Margin="5">
                     <TextBlock Text="Claim ID: 3 | 2 | R750 | Approved by Coordinator" VerticalAlignment="Center" Width="280"/>
-                    <Button Content="Approve" Width="70" Margin="5,0"/>
-                    <Button Content="Reject" Width="70" Margin="5,0"/>
+                    <Button Content="Approve" Width="70" Margin="5,0" Background="#D1D7FF"/>
+                    <Button Content="Reject" Width="70" Margin="5,0" Background="#D1D7FF"/>
                 </StackPanel>
             </ListBoxItem>
 
 
         </ListBox>
-        
 
-        <Button Content="Close" Width="100" Height="30" Margin="0,20,0,0" Click="CloseButton"/>
+        <!-- This is the Close button -->
+        <Button Content="Close" Width="100" Height="30" Margin="0,20,0,0" Click="CloseButton" Background= "#EBEBFF"/>
     </StackPanel>
 </Window>
 
