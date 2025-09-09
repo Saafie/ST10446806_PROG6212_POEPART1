@@ -17,3 +17,10 @@ It displays the ClaimID, amount, hours and the status of the claim. The close bu
 
 Lecturer Window changes
 Lecturer window allows for the user to press close to go back and press coordinator.
+
+3rd commit
+Added Manager window
+It is similar to the Coordinator window, it will have the claims displayed where it will be approved or rejected. the claims will only show once the claims were approved or rejected by the coordinator. there are no examples now because a claim wasnt approved or rejected by coordinator, there is also a close button which will lead back to the roles window.
+
+changes to Roles window
+a cirlcle was added to be clicked for manager, a method was added so when manager is clicked is will lead to the manager window, the circles also colour was added.
