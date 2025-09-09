@@ -41,3 +41,5 @@ Coordinator window = blue
 Manager window = purple
 
 Lecturer window was changed, the example data is displayed in columns for better reading, so the columns have headings as well. The headings Sumbit and my Claims are in demiBold. Minor changes was made to duplicate errors in example data.
+
+Everything was commited on github. Final prog will be be uploaded as Zipfile and report documents will be added
