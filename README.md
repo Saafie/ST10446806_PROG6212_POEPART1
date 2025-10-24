@@ -34,3 +34,12 @@ Claim ID: 2 | 2h | R4550 | Rejected by Coordinator
 Claim ID: 3 | 2 | R750 | Approved by coordinator
 The time lines of the examples arent 100% correct its just to show what would happen if the prototype had functionality.
 so the my claims in the lecturer window will give the status update of the claims.
+
+5th and Final Commit
+The last changes that were made was to Lecturer, coordinator and manager windows.xaml. it was just adding colour to it. Lecturer windoww = Pink
+Coordinator window = blue
+Manager window = purple
+
+Lecturer window was changed, the example data is displayed in columns for better reading, so the columns have headings as well. The headings Sumbit and my Claims are in demiBold. Minor changes was made to duplicate errors in example data.
+
+Everything was commited on github. Final prog will be be uploaded as Zipfile and report documents will be added
