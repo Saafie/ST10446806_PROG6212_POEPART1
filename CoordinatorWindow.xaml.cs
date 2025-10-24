@@ -17,18 +17,9 @@ namespace ST10446806_PROG6212_POEPART1
             InitializeComponent();
             claims = LecturerWindow.GetClaims(); // shared static list from LecturerWindow
             RefreshList();
-            this.Closing += CoordinatorWindow_Closing;
+            
         }
-        private void CoordinatorWindow_Closing(object sender, System.ComponentModel.CancelEventArgs e)
-        {
-            // If login was NOT successful, show RolesWindow
-            if (!loginSuccessful)
-            {
-                LoginWindow loginWindow = new LoginWindow("Coordinator");
-                loginWindow.WindowStartupLocation = WindowStartupLocation.CenterScreen;
-                loginWindow.Show();
-            }
-        }
+       
         private void RefreshList()
         {
             PendingList.ItemsSource = null;
@@ -89,17 +80,15 @@ namespace ST10446806_PROG6212_POEPART1
         }
 
 
-        private void Logout_Click(object sender, RoutedEventArgs e)
+   private void Logout_Click(object sender, RoutedEventArgs e)
         {
- 
-            // Open the login window for this role
-            LoginWindow login = new LoginWindow("Coordinator"); // or "Coordinator"/"Manager" depending on the window
+            // Pass true to indicate this is logout navigation
+            LoginWindow login = new LoginWindow("Coordinator");
             login.WindowStartupLocation = WindowStartupLocation.CenterScreen;
             login.Show();
-
-            // Close the current role window immediately
             this.Close();
         }
+
 
     }
 }

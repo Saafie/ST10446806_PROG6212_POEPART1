@@ -15,7 +15,7 @@ namespace ST10446806_PROG6212_POEPART1
             InitializeComponent();
             claims = LecturerWindow.GetClaims(); // shared static list from LecturerWindow
             RefreshList();
-            this.Closing += ManagerWindow_Closing;
+            
         }
 
         private void RefreshList()
@@ -25,16 +25,7 @@ namespace ST10446806_PROG6212_POEPART1
             ApprovalList.ItemsSource = claims;
         }
 
-        private void ManagerWindow_Closing(object sender, System.ComponentModel.CancelEventArgs e)
-        {
-            // If login was NOT successful, show RolesWindow
-            if (!loginSuccessful)
-            {
-                LoginWindow loginWindow = new LoginWindow("Coordinator");
-                loginWindow.WindowStartupLocation = WindowStartupLocation.CenterScreen;
-                loginWindow.Show();
-            }
-        }
+       
 
         private void Approve_Click_Row(object sender, RoutedEventArgs e)
         {

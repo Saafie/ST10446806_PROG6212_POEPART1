@@ -45,6 +45,29 @@ namespace ST10446806_PROG6212_POEPART1
                 return;
             }
 
+            if (SelectedDocumentPaths.Count == 0)
+            {
+                MessageBox.Show("Please upload at least one document before submitting the claim.");
+                return;
+            }
+
+            // Allowed file extensions
+            var allowedExtensions = new[] { ".pdf", ".xlsx", ".doc", ".docx" };
+
+            // Check each file
+            foreach (var uploadedFile in SelectedDocumentPaths)
+            {
+                // Assuming UploadedFile has a property FilePath
+                string ext = System.IO.Path.GetExtension(uploadedFile.FilePath).ToLower();
+                if (!allowedExtensions.Contains(ext))
+                {
+                    MessageBox.Show($"Invalid file type: {ext}. Only PDF, Excel (.xlsx), and Word (.doc/.docx) files are allowed.");
+                    return;
+                }
+            }
+
+
+
             var claim = new Claim
             {
                 ClaimID = claimCounter++,
