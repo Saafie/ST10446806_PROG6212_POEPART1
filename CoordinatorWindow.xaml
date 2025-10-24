@@ -1,42 +1,51 @@
 ﻿<Window x:Class="ST10446806_PROG6212_POEPART1.CoordinatorWindow"
         xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
-        Title="Coordinator Review" Height="400" Width="500" Background="#BCEFF5">
-
+        Title="Coordinator Dashboard" Height="500" Width="650"
+        WindowStartupLocation="CenterScreen" Background="#BCEFF5">
 
     <StackPanel Margin="10">
-        <TextBlock Text="Pending Claims" FontSize="16" FontWeight="DemiBold" Margin="5"/>
+        <TextBlock Text="Pending Claims" FontSize="18" FontWeight="Bold" Margin="0,0,0,10"/>
 
+        <ListView x:Name="PendingList" Height="320" Background="#D4F6FA" Margin="0,0,0,10">
+            <ListView.View>
+                <GridView>
+                    <GridViewColumn Header="Claim ID" Width="70" DisplayMemberBinding="{Binding ClaimID}" />
+                    <GridViewColumn Header="Lecturer ID" Width="90" DisplayMemberBinding="{Binding LecturerID}" />
+                    <GridViewColumn Header="Hours" Width="70" DisplayMemberBinding="{Binding TotalHours}" />
+                    <GridViewColumn Header="Amount" Width="90" DisplayMemberBinding="{Binding Amount}" />
+                    <GridViewColumn Header="Status" Width="130" DisplayMemberBinding="{Binding Status}" />
+                    <GridViewColumn Header="Actions" Width="160">
+                        <GridViewColumn.CellTemplate>
+                            <DataTemplate>
+                                <StackPanel Orientation="Horizontal" HorizontalAlignment="Center">
+                                    <Button Content="Approve" Width="70" Margin="5" Click="Approve_Click" Tag="{Binding}" />
+                                    <Button Content="Reject" Width="70" Margin="5" Click="Reject_Click" Tag="{Binding}" />
+                                </StackPanel>
+                            </DataTemplate>
+                        </GridViewColumn.CellTemplate>
+                    </GridViewColumn>
+                </GridView>
+            </ListView.View>
 
-        <ListBox Height="250" Background="#D4F6FA">
+            <!-- Apply custom header style -->
+            <ListView.Resources>
+                <Style TargetType="GridViewColumnHeader">
+                    <Setter Property="Background" Value="#BCEFF5"/>
+                    <!-- Dark gray -->
+                    <Setter Property="Foreground" Value="Black"/>
+                    <Setter Property="FontWeight" Value="Bold"/>
+                    <Setter Property="FontSize" Value="13"/>
+                    <Setter Property="HorizontalContentAlignment" Value="Center"/>
+                    <Setter Property="Padding" Value="6,4"/>
+                </Style>
+            </ListView.Resources>
+        </ListView>
 
-            <!--1st Claim-->
-            <ListBoxItem>
-            <StackPanel Orientation="Horizontal" Margin="5" >
-                <TextBlock Text="Claim ID: 1 | 13h | R4550 | Submission Pending" VerticalAlignment="Center" Width="280"/>
-                    <Button Content="Approve" Width="70" Margin="5,0" Background="#BCEFF5"/>
-                    <Button Content="Reject" Width="70" Margin="5,0" Background="#BCEFF5"/>
-                    </StackPanel>
-            </ListBoxItem>
-            
-            <!--2nd Claim-->
-            <ListBoxItem>
-                <StackPanel Orientation="Horizontal" Margin="5" >
-                    <TextBlock Text="Claim ID: 2 | 8h | R2800 | Rejected by Coordinator" VerticalAlignment="Center" Width="280"/>
-                </StackPanel>
-            </ListBoxItem>
-            
-            <!--3rd Claim-->
-            <ListBoxItem>
-       
-                <StackPanel Orientation="Horizontal" Margin="5">
-                    <TextBlock Text="Claim ID: 3 | 2 | R750 | Approved by coordinator" VerticalAlignment="Center" Width="280"/>
-                </StackPanel>
-        </ListBoxItem>
-
-    </ListBox>
-
-        <!-- This is the Close button -->
-        <Button Content="Close" Width="100" Height="30" Margin="0,20,0,0" Click="CloseButton" Background="#D4F6FA"/>
+        <Button Content="Log Out"
+                Width="120"
+                Height="30"
+                HorizontalAlignment="Center"
+                Click="Logout_Click" />
     </StackPanel>
 </Window>

@@ -17,10 +17,20 @@ namespace ST10446806_PROG6212_POEPART1
             InitializeComponent();
             ChangeColorBasedOnRole(role);
 
-            // When login window closes without login, reopen RolesWindow
-            this.Closed += LoginWindow_Closed;
+            // Only handle closed event if you want to check for unsuccessful login
+            this.Closing += LoginWindow_Closing;
         }
 
+        private void LoginWindow_Closing(object sender, System.ComponentModel.CancelEventArgs e)
+        {
+            // If login was NOT successful, show RolesWindow
+            if (!loginSuccessful)
+            {
+                RolesWindow rolesWindow = new RolesWindow();
+                rolesWindow.WindowStartupLocation = WindowStartupLocation.CenterScreen;
+                rolesWindow.Show();
+            }
+        }
         private void ChangeColorBasedOnRole(string role)
         {
             switch (role)
@@ -34,10 +44,9 @@ namespace ST10446806_PROG6212_POEPART1
                 case "Manager":
                     this.Background = new SolidColorBrush(Color.FromRgb(188, 239, 245)); // light blue
                     break;
-               
+
             }
         }
-
         private void LoginButton_Click(object sender, RoutedEventArgs e)
         {
             string username = UsernameBox.Text.Trim().ToLower();
@@ -67,14 +76,6 @@ namespace ST10446806_PROG6212_POEPART1
 
                 if (nextWindow != null)
                 {
-                    // When role window closes, return to RolesWindow
-                    nextWindow.Closed += (s, args) =>
-                    {
-                        RolesWindow rolesWindow = new RolesWindow();
-                        rolesWindow.WindowStartupLocation = WindowStartupLocation.CenterScreen;
-                        rolesWindow.Show();
-                    };
-
                     nextWindow.Show();
                     this.Close(); // Close LoginWindow
                 }
@@ -82,17 +83,6 @@ namespace ST10446806_PROG6212_POEPART1
             else
             {
                 MessageBox.Show("Invalid username or password.", "Login Failed");
-            }
-        }
-
-        private void LoginWindow_Closed(object? sender, EventArgs e)
-        {
-            // Only reopen RolesWindow if login was NOT successful
-            if (!loginSuccessful)
-            {
-                RolesWindow rolesWindow = new RolesWindow();
-                rolesWindow.WindowStartupLocation = WindowStartupLocation.CenterScreen;
-                rolesWindow.Show();
             }
         }
     }

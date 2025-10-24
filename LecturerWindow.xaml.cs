@@ -137,17 +137,23 @@ namespace ST10446806_PROG6212_POEPART1
 
         private void LogoutButton(object sender, RoutedEventArgs e)
         {
+            // Pass true to indicate this is logout navigation
             LoginWindow login = new LoginWindow("Lecturer");
             login.WindowStartupLocation = WindowStartupLocation.CenterScreen;
             login.Show();
             this.Close();
         }
-    }
 
+
+        public static List<Claim> GetClaims() => claims;
+    }
     public class UploadedFile
     {
         public string FilePath { get; set; }
         public string FileName => System.IO.Path.GetFileName(FilePath);
     }
 }
+
+    
+
 

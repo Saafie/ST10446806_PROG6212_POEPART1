@@ -31,13 +31,14 @@ namespace ST10446806_PROG6212_POEPART1
         }
 
         private void OpenLoginWindow(string role)
-        {
+        { // Close the roles window if you want to move on
+            
             // Create and show the LoginWindow, passing the selected role
             var loginWindow = new LoginWindow(role);
             loginWindow.Show();
 
-            // Close the roles window if you want to move on
             this.Close();
+
         }
     }
 }
