@@ -11,7 +11,7 @@
             <TextBlock Text="Password:"/>
             <PasswordBox x:Name="PasswordBox" Margin="0,5,0,20" Background="#FFF0F2"/>
 
-            <Button Content="Login" Height="30" Click="LoginButton_Click" Background="#FFE3E8"/>
+            <Button x:Name="LoginButton" Content="Login" Height="30" Click="LoginButton_Click" Background="#FFE3E8"/>
         </StackPanel>
     </Grid>
 </Window>

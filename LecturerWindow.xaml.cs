@@ -12,7 +12,8 @@ namespace ST10446806_PROG6212_POEPART1
     {
         private static List<Claim> claims = new List<Claim>();
         private static int claimCounter = 1;
-        private LecturerProfile lecturer = new LecturerProfile { LecturerID = 1, HourlyRate = 350 };
+        
+        private LecturerProfile lecturer = new LecturerProfile { LecturerID = 1};
 
         // Only use one collection for selected documents
         public ObservableCollection<UploadedFile> SelectedDocumentPaths { get; set; } = new ObservableCollection<UploadedFile>();
@@ -32,6 +33,12 @@ namespace ST10446806_PROG6212_POEPART1
                 return;
             }
 
+            if (!decimal.TryParse(HourlyRateBox.Text, out decimal hourlyRate))
+            {
+                MessageBox.Show("Please enter a valid hourly rate.");
+                return;
+            }
+
             if (SelectedDocumentPaths.Count == 0)
             {
                 MessageBox.Show("Please upload at least one document before submitting the claim.");
@@ -46,7 +53,7 @@ namespace ST10446806_PROG6212_POEPART1
                 Month = DateTime.Now.Month,
                 Year = DateTime.Now.Year,
                 TotalHours = hours,
-                Amount = hours * lecturer.HourlyRate,
+                Amount = hours * hourlyRate,
                 Status = "Documents uploaded",
                 SubmittedDate = DateTime.Now,
                 Documents = SelectedDocumentPaths.Select(f => f.FilePath).ToList()

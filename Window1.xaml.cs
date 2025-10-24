@@ -39,10 +39,16 @@ namespace ST10446806_PROG6212_POEPART1
                     this.Background = new SolidColorBrush(Color.FromRgb(255, 192, 203)); // pink
                     break;
                 case "Coordinator":
-                    this.Background = new SolidColorBrush(Color.FromRgb(212, 212, 250)); // light purple
+                    this.Background = new SolidColorBrush(Color.FromRgb(188, 239, 245)); // light blue
+                    UsernameBox.Background = new SolidColorBrush(Color.FromRgb(212, 246, 250)); // #EBEBFF
+                    PasswordBox.Background = new SolidColorBrush(Color.FromRgb(212, 246, 250));
+                    LoginButton.Background = new SolidColorBrush(Color.FromRgb(212, 246, 250));
                     break;
                 case "Manager":
-                    this.Background = new SolidColorBrush(Color.FromRgb(188, 239, 245)); // light blue
+                    this.Background = new SolidColorBrush(Color.FromRgb(212, 212, 250)); // light purple
+                    UsernameBox.Background = new SolidColorBrush(Color.FromRgb(235, 235, 255));
+                    PasswordBox.Background = new SolidColorBrush(Color.FromRgb(235, 235, 255));
+                    LoginButton.Background = new SolidColorBrush(Color.FromRgb(235, 235, 255));
                     break;
 
             }

@@ -47,6 +47,7 @@ namespace ST10446806_PROG6212_POEPART1
         public decimal Amount { get; set; }
         public string Status { get; set; }
         public DateTime SubmittedDate { get; set; }
+        public string ApprovedBy { get; set; }
         public List<string> Documents { get; set; } = new List<string>();
 
         public string DocumentStatus => Documents.Count == 0 ? "No docs" : $"{Documents.Count} doc(s)";
