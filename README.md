@@ -43,3 +43,32 @@ Manager window = purple
 Lecturer window was changed, the example data is displayed in columns for better reading, so the columns have headings as well. The headings Sumbit and my Claims are in demiBold. Minor changes was made to duplicate errors in example data.
 
 Everything was commited on github. Final prog will be be uploaded as Zipfile and report documents will be added
+
+Part 2 
+Commit 1
+Add the window1 that allows for a login to occur for different members, Lecturer, Coordinator, Managers to log in and get to their specific window. Also made changes to the role window to allow login window to pop up but each log in area has its own login colour. Lecturer window was update with functionallity allowing lecturers to make claims and it to show in the provided text box. 
+
+How to log in?:
+Lecturer LOGIN Details
+- Username: lecturer1
+- Password: 1234
+
+Coordinator LOGIN Details
+- Username: coordinator1
+- Password: 1234
+
+Manager LOGIN Details
+- Username: manager1
+- Password: 1234
+
+Commit 2 
+updated the look of coordinatorWindow, and added functionality, which allowed a coordinator to approve or reject lecture claims. The ability to add documents to the claims was added and is required to make a claim. the ability to view a document was added only to the lecturer window. functionality simalr to coordinates were added to the manager window, allowing for the manager to approve or reject claims. Real time updates are made to the lecturer claims, but it requires you to log back into lecture window to see it change.
+
+Commit 3 
+Made adjustments to the look of the windows, corrected any closing errors or duplicates that occured. Added the ability to scroll through the documents but cant access it yes. 
+
+Commit 4
+allowed managers and coordinators to view the documents. when they approved or rejected claims, showed that the options are grayed out to ensure them the approval process of that claim is finished. Made only approved claims available to the managers. Altered the colours of buttons to that of its window. Added the ability to say your own rates, and have it calculated, and displayed as an amount. 
+
+Commit 5
+Added a unit test, and had the document size be restricted, and what type of documents can be uploaded. Had issues with the x button on manger and coordinator window so, removed it to prevent duplicates. Suggest on those pages press log out
