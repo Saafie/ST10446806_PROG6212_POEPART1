@@ -1,56 +1,77 @@
 ﻿<Window x:Class="ST10446806_PROG6212_POEPART1.LecturerWindow"
         xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
-        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
-        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
-        xmlns:local="clr-namespace:ST10446806_PROG6212_POEPART1"
-        mc:Ignorable="d"
-        Title="Lecturer Claims" Height="500" Width="600"
+        Title="Lecturer Claims" Height="588" Width="606"
         WindowStartupLocation="CenterScreen" Background="#FFC0CB">
-
-    <Window.Resources>
-        <!-- used to create fake data for the claimList -->
-        <XmlDataProvider x:Key="ClaimsFakeData" XPath="Claims">
-            <x:XData>
-                <Claims xmlns="">
-                    <!--This displays the data for the claims-->
-                    <Claim ClaimID="1" TotalHours="13" Amount="4550" Status="Submission Pending" DateSubmission="09/09/2025"/>
-                    <Claim ClaimID="2" TotalHours="8" Amount="2800" Status="Rejected by Coordinator" DateSubmission="09/09/2025"/>
-                    <Claim ClaimID="3" TotalHours="2" Amount="750" Status="Approved by Manager" DateSubmission="09/09/2025"/>
-                </Claims>
-            </x:XData>
-        </XmlDataProvider>
-    </Window.Resources>
 
     <StackPanel Margin="10">
         <TextBlock Text="Submit New Claim" FontSize="16" FontWeight="DemiBold" Margin="5"/>
         <TextBlock Text="Hourly rates: 350 " Width="152" Margin="5,0,450,0"/>
 
         <StackPanel Orientation="Horizontal" Margin="5">
-            <TextBlock Text="Hours: " Width="53"/>
+            <TextBlock Text="Hours: " Width="53"  />
             <TextBox Name="HoursBox" Width="100" Background="#FFF0F2"/>
         </StackPanel>
 
-        <Button Content="Upload Supporting Document" Width="200" Height="25" HorizontalAlignment="Left" Background="#FFF0F2"/>
-        <Button Content="Submit Claim" Width="200" Height="35" Margin="15" Background="#FFF0F2"/>
+        <!-- Documents Upload Section -->
+        <TextBlock Text="Supporting Documents:" FontWeight="Bold" Margin="0,5"/>
+        <ItemsControl x:Name="DocumentsList" ItemsSource="{Binding SelectedDocumentPaths}" Margin="0,0,0,5">
+            <ItemsControl.ItemsPanel>
+                <ItemsPanelTemplate>
+                    <WrapPanel />
+                </ItemsPanelTemplate>
+            </ItemsControl.ItemsPanel>
+            <ItemsControl.ItemTemplate>
+                <DataTemplate>
+                    <Border Background="#FFC0CB" CornerRadius="5" Margin="2" Padding="5" >
+                        <StackPanel Orientation="Horizontal">
+                            <TextBlock Text="{Binding FileName}" VerticalAlignment="Center"/>
+                            <TextBlock Text=" X" Foreground="Black" Cursor="Hand" Margin="5,0,0,0"
+                                       MouseDown="RemoveDocument_MouseDown"/>
+                        </StackPanel>
+                    </Border>
+                </DataTemplate>
+            </ItemsControl.ItemTemplate>
+        </ItemsControl>
+
+        <Button Content="Upload Document(s)" Width="200" Height="25" Click="UploadDocument_Click" HorizontalAlignment="Left" Background="#FFF0F2"/>
+        <Button Content="Submit Claim" Width="200" Height="35" Margin="15" Click="Submit_Click" Background="#FFF0F2"/>
+       
 
         <TextBlock Text="My Claims" FontSize="16" FontWeight="DemiBold" Margin="2"/>
 
-        <!-- This Binds the Listview to the ClaimsFakeData (XmlDataProvider)-->
         <ListView x:Name="ClaimList"
-                  ItemsSource="{Binding Source={StaticResource ClaimsFakeData}, XPath=Claim}"
                   Height="200" Background="#FFF0F2" Margin="0,10,0,0">
-
             <ListView.View>
                 <GridView>
-                    <!--This is the headings for the columns -->
-                    <GridViewColumn Header="ID" Width="50" DisplayMemberBinding="{Binding XPath=@ClaimID}" />
-                    <GridViewColumn Header="Hours" Width="80" DisplayMemberBinding="{Binding XPath=@TotalHours}" />
-                    <GridViewColumn Header="Amount (R)" Width="100" DisplayMemberBinding="{Binding XPath=@Amount}" />
-                    <GridViewColumn Header="Status" Width="150" DisplayMemberBinding="{Binding XPath=@Status}" />
-                    <GridViewColumn Header="Date" Width="120" DisplayMemberBinding="{Binding XPath=@DateSubmission}" />
+                    <GridViewColumn Header="ID" Width="50" DisplayMemberBinding="{Binding ClaimID}" />
+                    <GridViewColumn Header="Hours" Width="80" DisplayMemberBinding="{Binding TotalHours}" />
+                    <GridViewColumn Header="Amount (R)" Width="100" DisplayMemberBinding="{Binding Amount}" />
+                    <GridViewColumn Header="Status" Width="150" DisplayMemberBinding="{Binding Status}" />
+                    <GridViewColumn Header="Date" Width="125" DisplayMemberBinding="{Binding DateFormatted}" />
+                    <GridViewColumn Header="Documents" Width="200">
+                        
+                        <GridViewColumn.CellTemplate>
+                            <DataTemplate>
+                                <ItemsControl ItemsSource="{Binding Documents}">
+                                    <ItemsControl.ItemTemplate>
+                                        <DataTemplate>
+                                            <TextBlock Text="{Binding Path=.}" 
+                                               TextDecorations="Underline" 
+                                               Foreground="Blue" 
+                                               Cursor="Hand" 
+                                               Margin="0,0,5,0"
+                                               MouseDown="Document_Click"/>
+                                        </DataTemplate>
+                                    </ItemsControl.ItemTemplate>
+                                </ItemsControl>
+                            </DataTemplate>
+                        </GridViewColumn.CellTemplate>
+                    </GridViewColumn>
                 </GridView>
             </ListView.View>
         </ListView>
+        
+        <Button Content="LogOut" Width="200" Height="32" Margin="15" Click="LogoutButton" Background="#FFF0F2"/>
     </StackPanel>
 </Window>

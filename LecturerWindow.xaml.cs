@@ -1,144 +1,153 @@
-﻿
-    using System.ComponentModel;
-    using System.Security.Claims;
-    using System.Text;
-    using System.Windows;
-    using System.Windows.Controls;
-    using System.Windows.Data;
-    using System.Windows.Documents;
-    using System.Windows.Input;
-    using System.Windows.Media;
-    using System.Windows.Media.Imaging;
-    using System.Windows.Navigation;
-    using System.Windows.Shapes;
+﻿using Microsoft.Win32;
+using System;
+using System.Collections.Generic;
+using System.Collections.ObjectModel;
+using System.Linq;
+using System.Windows;
+using System.Windows.Input;
 
-    namespace ST10446806_PROG6212_POEPART1
+namespace ST10446806_PROG6212_POEPART1
+{
+    public partial class LecturerWindow : Window
     {
-        public partial class LecturerWindow : Window
+        private static List<Claim> claims = new List<Claim>();
+        private static int claimCounter = 1;
+        private LecturerProfile lecturer = new LecturerProfile { LecturerID = 1, HourlyRate = 350 };
+
+        // Only use one collection for selected documents
+        public ObservableCollection<UploadedFile> SelectedDocumentPaths { get; set; } = new ObservableCollection<UploadedFile>();
+
+        public LecturerWindow()
         {
-            private static List<Claim> claims = new List<Claim>();
-            private static int claimCounter = 1;
-            private LecturerProfile lecturer = new LecturerProfile { LecturerID = 1, HourlyRate = 350 };
+            InitializeComponent();
+            ClaimList.ItemsSource = claims;
+            DocumentsList.ItemsSource = SelectedDocumentPaths; // Bind ItemsControl
+        }
 
-            public LecturerWindow()
+        private void Submit_Click(object sender, RoutedEventArgs e)
+        {
+            if (!decimal.TryParse(HoursBox.Text, out decimal hours))
             {
-                InitializeComponent();
-                RefreshClaims();
-                this.Closing += Close_LecturerWindow;
+                MessageBox.Show("Please enter a valid number of hours.");
+                return;
             }
 
-            private void Close_LecturerWindow(object sender, CancelEventArgs e)
+            if (SelectedDocumentPaths.Count == 0)
             {
-                LoginWindow login = new LoginWindow("Lecturer");
-                login.WindowStartupLocation = WindowStartupLocation.CenterScreen;
-                login.Show();
+                MessageBox.Show("Please upload at least one document before submitting the claim.");
+                return;
             }
 
-            
-
-            private void Submit_Click(object sender, RoutedEventArgs e)
+            var claim = new Claim
             {
-                if (decimal.TryParse(HoursBox.Text, out decimal hours))
+                ClaimID = claimCounter++,
+                LecturerID = lecturer.LecturerID,
+                Day = DateTime.Now.Day,
+                Month = DateTime.Now.Month,
+                Year = DateTime.Now.Year,
+                TotalHours = hours,
+                Amount = hours * lecturer.HourlyRate,
+                Status = "Documents uploaded",
+                SubmittedDate = DateTime.Now,
+                Documents = SelectedDocumentPaths.Select(f => f.FilePath).ToList()
+            };
+
+            claims.Add(claim);
+            RefreshClaims();
+
+            MessageBox.Show($"Claim submitted with {claim.Documents.Count} document(s).");
+
+            // Clear uploaded documents and reset UI
+            SelectedDocumentPaths.Clear();
+            HoursBox.Clear();
+        }
+
+        private void UploadDocument_Click(object sender, RoutedEventArgs e)
+        {
+            OpenFileDialog dlg = new OpenFileDialog
+            {
+                Multiselect = true,
+                Filter = "All Files|*.*"
+            };
+
+            if (dlg.ShowDialog() == true)
+            {
+                // Ensure the app folder exists
+                string appDocsFolder = System.IO.Path.Combine(AppDomain.CurrentDomain.BaseDirectory, "UploadedDocs");
+                if (!System.IO.Directory.Exists(appDocsFolder))
+                    System.IO.Directory.CreateDirectory(appDocsFolder);
+
+                // Copy selected files to the app folder
+                foreach (var file in dlg.FileNames)
                 {
-                    var claim = new Claim
-                    {
-                        ClaimID = claimCounter++,
-                        LecturerID = lecturer.LecturerID,
-                        Day = DateTime.Now.Day,
-                        Month = DateTime.Now.Month,
-                        Year = DateTime.Now.Year,
-                        TotalHours = hours,
-                        Amount = hours * lecturer.HourlyRate,
-                        Status = "Submission pending",
-                        SubmittedDate = DateTime.Now
-                    };
+                    string destFile = System.IO.Path.Combine(appDocsFolder, System.IO.Path.GetFileName(file));
+                    if (!System.IO.File.Exists(destFile))
+                        System.IO.File.Copy(file, destFile);
 
-                    MessageBox.Show("Claim submitted");
-                    claims.Add(claim);
-                    RefreshClaims();
+                    if (!SelectedDocumentPaths.Any(f => f.FilePath == destFile))
+                        SelectedDocumentPaths.Add(new UploadedFile { FilePath = destFile });
+                }
+            }
+        }
+
+
+
+        private void RemoveDocument_MouseDown(object sender, MouseButtonEventArgs e)
+        {
+            if (sender is System.Windows.Controls.TextBlock tb && tb.DataContext is UploadedFile file)
+            {
+                SelectedDocumentPaths.Remove(file);
+            }
+        }
+
+        private void Document_Click(object sender, MouseButtonEventArgs e)
+        {
+            if (sender is System.Windows.Controls.TextBlock tb)
+            {
+                string filePath = tb.Text;
+
+                if (System.IO.File.Exists(filePath))
+                {
+                    try
+                    {
+                        System.Diagnostics.Process.Start(new System.Diagnostics.ProcessStartInfo
+                        {
+                            FileName = filePath,
+                            UseShellExecute = true
+                        });
+                    }
+                    catch (Exception ex)
+                    {
+                        MessageBox.Show($"Cannot open document: {ex.Message}");
+                    }
                 }
                 else
                 {
-                    MessageBox.Show("Please enter a valid number of hours.");
+                    MessageBox.Show("File not found.");
                 }
             }
-
-            private void UploadDocument_Click(object sender, RoutedEventArgs e)
-            {
-                if (claims.Count == 0)
-                {
-                    MessageBox.Show("Please submit a claim before uploading a document.", "No Claim Found");
-                    return;
-                }
-
-                // Create file dialog
-                Microsoft.Win32.OpenFileDialog dlg = new Microsoft.Win32.OpenFileDialog
-                {
-                    Title = "Select Document to Upload",
-                    Filter = "PDF Files (*.pdf)|*.pdf|Image Files (*.jpg;*.png)|*.jpg;*.png|All Files (*.*)|*.*"
-                };
-
-                if (dlg.ShowDialog() == true)
-                {
-                    // Get the most recent claim
-                    var latestClaim = claims.Last();
-
-                    // Save the file path
-                    latestClaim.DocumentPath = dlg.FileName;
-
-                    MessageBox.Show($"Document '{System.IO.Path.GetFileName(dlg.FileName)}' linked to Claim #{latestClaim.ClaimID}.", "Upload Successful");
-
-                    RefreshClaims();
-                }
-            }
-
-            private void ViewDocument_Click(object sender, RoutedEventArgs e)
-            {
-                var selectedClaim = (Claim)ClaimList.SelectedItem;
-                if (selectedClaim == null)
-                {
-                    MessageBox.Show("Please select a claim first.");
-                    return;
-                }
-
-                if (string.IsNullOrEmpty(selectedClaim.DocumentPath))
-                {
-                    MessageBox.Show("No document attached to this claim.");
-                    return;
-                }
-
-                // Open the document using the default app
-                System.Diagnostics.Process.Start(new System.Diagnostics.ProcessStartInfo
-                {
-                    FileName = selectedClaim.DocumentPath,
-                    UseShellExecute = true
-                });
-            }
+        }
 
 
-            private void RefreshClaims()
-            {
-                ClaimList.ItemsSource = null;
-                ClaimList.ItemsSource = claims.Select(c => new
-                {
-                    c.ClaimID,
-                    c.TotalHours,
-                    c.Amount,
-                    c.Status,
-                    DateFormatted = $"{c.Day}/{c.Month}/{c.Year}",
-                    HasDocument = string.IsNullOrEmpty(c.DocumentPath) ? "No" : "Yes"
-                }).ToList();
-            }
+        private void RefreshClaims()
+        {
+            ClaimList.ItemsSource = null;
+            ClaimList.ItemsSource = claims;
+        }
 
-
-            private void LogoutButton(object sender, RoutedEventArgs e)
-            {
-                Application.Current.Windows.OfType<LoginWindow>().FirstOrDefault()?.Show();
-                this.Close();
-            }
-
-            public static List<Claim> GetClaims() => claims;
+        private void LogoutButton(object sender, RoutedEventArgs e)
+        {
+            LoginWindow login = new LoginWindow("Lecturer");
+            login.WindowStartupLocation = WindowStartupLocation.CenterScreen;
+            login.Show();
+            this.Close();
         }
     }
 
-  
+    public class UploadedFile
+    {
+        public string FilePath { get; set; }
+        public string FileName => System.IO.Path.GetFileName(FilePath);
+    }
+}
+

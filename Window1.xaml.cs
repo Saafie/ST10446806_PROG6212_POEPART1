@@ -3,6 +3,7 @@
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Media;
+using static ST10446806_PROG6212_POEPART1.Claim;
 
 namespace ST10446806_PROG6212_POEPART1
 {
