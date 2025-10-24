@@ -5,43 +5,42 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Controls;
-using System.Windows.Data;
-using System.Windows.Documents;
-using System.Windows.Input;
-using System.Windows.Media;
-using System.Windows.Media.Imaging;
-using System.Windows.Shapes;
 
 namespace ST10446806_PROG6212_POEPART1
 {
-
     public partial class RolesWindow : Window
     {
         public RolesWindow()
         {
             InitializeComponent();
-          
         }
 
-   
-        private void ClickLecturer(object sender, RoutedEventArgs l)
+        private void ClickLecturer(object sender, RoutedEventArgs e)
         {
-            LecturerWindow lecturerWindow = new LecturerWindow();
-            lecturerWindow.Show();
+            OpenLoginWindow("Lecturer");
         }
 
-        private void ClickCoordinator(object sender, RoutedEventArgs c)
+        private void ClickCoordinator(object sender, RoutedEventArgs e)
         {
-            CoordinatorWindow coordinatorWindow = new CoordinatorWindow();
-            coordinatorWindow.Show();
+            OpenLoginWindow("Coordinator");
         }
 
-        private void ClickManager(object sender, RoutedEventArgs c)
+        private void ClickManager(object sender, RoutedEventArgs e)
         {
-            ManagerWindow managerWindow = new ManagerWindow();
-            managerWindow.Show();
+            OpenLoginWindow("Manager");
+        }
+
+        private void OpenLoginWindow(string role)
+        {
+            // Create and show the LoginWindow, passing the selected role
+            var loginWindow = new LoginWindow(role);
+            loginWindow.Show();
+
+            // Close the roles window if you want to move on
+            this.Close();
         }
     }
 }
+
 
 
