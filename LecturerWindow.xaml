@@ -73,6 +73,6 @@
             </ListView.View>
         </ListView>
 
-        <Button Content="LogOut" Width="200" Height="32" Margin="15" Click="LogoutButton" Background="#FFF0F2"/>
+        <Button Content="LogOut" Width="200" Height="32" Margin="15" Click=" LogoutButton_Click" Background="#FFF0F2"/>
     </StackPanel>
 </Window>

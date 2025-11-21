@@ -17,15 +17,27 @@ namespace ST10446806_PROG6212_POEPART1.Data
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
+            base.OnModelCreating(modelBuilder);
+
             // Seed users
             modelBuilder.Entity<User>().HasData(
+                // Lecturers
                 new User { UserID = 1, FullName = "John Doe", Username = "lecturer1", Password = "1234", Role = UserRole.Lecturer },
-                new User { UserID = 2, FullName = "Sarah Smith", Username = "coordinator1", Password = "1234", Role = UserRole.Coordinator },
-                new User { UserID = 3, FullName = "Michael Brown", Username = "manager1", Password = "1234", Role = UserRole.Manager }
-            );
+                new User { UserID = 2, FullName = "Jane Smith", Username = "lecturer2", Password = "1234", Role = UserRole.Lecturer },
 
-            // Specify decimal precision for Claims
-            modelBuilder.Entity<Claim>().Property(c => c.Amount).HasPrecision(18, 2);
+                // Coordinators
+                new User { UserID = 3, FullName = "Sarah Smith", Username = "coordinator1", Password = "1234", Role = UserRole.Coordinator },
+                new User { UserID = 4, FullName = "David Johnson", Username = "coordinator2", Password = "1234", Role = UserRole.Coordinator },
+
+                // Managers
+                new User { UserID = 5, FullName = "Michael Brown", Username = "manager1", Password = "1234", Role = UserRole.Manager },
+                new User { UserID = 6, FullName = "Emily Davis", Username = "manager2", Password = "1234", Role = UserRole.Manager }
+            );
+        
+
+
+        // Specify decimal precision for Claims
+        modelBuilder.Entity<Claim>().Property(c => c.Amount).HasPrecision(18, 2);
             modelBuilder.Entity<Claim>().Property(c => c.TotalHours).HasPrecision(10, 2);
 
             // Specify decimal precision for LecturerProfile

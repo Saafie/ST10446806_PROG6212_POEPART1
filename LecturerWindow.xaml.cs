@@ -13,8 +13,8 @@ namespace ST10446806_PROG6212_POEPART1
     {
         private static List<Claim> claims = new List<Claim>();
         private static int claimCounter = 1;
-        
-        private LecturerProfile lecturer = new LecturerProfile { LecturerID = 1};
+
+        private LecturerProfile lecturer = new LecturerProfile { LecturerID = 1 };
 
         // Only use one collection for selected documents
         public ObservableCollection<UploadedFile> SelectedDocumentPaths { get; set; } = new ObservableCollection<UploadedFile>();
@@ -24,7 +24,9 @@ namespace ST10446806_PROG6212_POEPART1
             InitializeComponent();
             ClaimList.ItemsSource = claims;
             DocumentsList.ItemsSource = SelectedDocumentPaths; // Bind ItemsControl
+            this.Closing += LecturerWindow_Closing;
         }
+        private bool loginSuccessful = false;
 
         private void Submit_Click(object sender, RoutedEventArgs e)
         {
@@ -118,8 +120,8 @@ namespace ST10446806_PROG6212_POEPART1
                     if (!SelectedDocumentPaths.Any(f => f.FilePath == destFile))
                         SelectedDocumentPaths.Add(new UploadedFile { FilePath = destFile });
                 }
-            }
-        }
+            } }
+
 
 
 
@@ -160,31 +162,45 @@ namespace ST10446806_PROG6212_POEPART1
         }
 
 
+
         private void RefreshClaims()
         {
             ClaimList.ItemsSource = null;
             ClaimList.ItemsSource = claims;
         }
 
-        private void LogoutButton(object sender, RoutedEventArgs e)
+        private void LogoutButton_Click(object sender, RoutedEventArgs e)
         {
-            // Pass true to indicate this is logout navigation
-            LoginWindow login = new LoginWindow("Lecturer");
-            login.WindowStartupLocation = WindowStartupLocation.CenterScreen;
-            login.Show();
+            loginSuccessful = false; // Optional, since closing triggers RolesWindow
             this.Close();
         }
 
 
+
         public static List<Claim> GetClaims() => claims;
-    }
+    
     public class UploadedFile
     {
         public string FilePath { get; set; }
         public string FileName => System.IO.Path.GetFileName(FilePath);
     }
+
+        private void LecturerWindow_Closing(object sender, System.ComponentModel.CancelEventArgs e)
+        {
+            if (!loginSuccessful)
+            {
+                // Only show RolesWindow if the user closed the window via X without logging in
+                RolesWindow rolesWindow = new RolesWindow();
+                rolesWindow.WindowStartupLocation = WindowStartupLocation.CenterScreen;
+                rolesWindow.Show();
+            }
+        }
+
+
+    }
 }
 
-    
+
+
 
 

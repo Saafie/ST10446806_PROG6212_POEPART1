@@ -18,7 +18,7 @@ namespace ST10446806_PROG6212_POEPART1
             InitializeComponent();
             claims = LecturerWindow.GetClaims(); // shared static list from LecturerWindow
             RefreshList();
-            
+            this.Closing += CoordinatorWindow_Closing;
         }
        
         private void RefreshList()
@@ -85,11 +85,15 @@ namespace ST10446806_PROG6212_POEPART1
         {
             // Pass true to indicate this is logout navigation
             LoginWindow login = new LoginWindow("Coordinator");
-            login.WindowStartupLocation = WindowStartupLocation.CenterScreen;
-            login.Show();
             this.Close();
         }
-
+        private void CoordinatorWindow_Closing(object sender, System.ComponentModel.CancelEventArgs e)
+        {
+            // Open the login/roles window when the user clicks X
+            RolesWindow rolesWindow = new RolesWindow();
+            rolesWindow.WindowStartupLocation = WindowStartupLocation.CenterScreen;
+            rolesWindow.Show();
+        }
 
     }
 }

@@ -10,12 +10,13 @@ namespace ST10446806_PROG6212_POEPART1.Windows
     public partial class LoginWindow : Window
     {
         private string Role;
-
+        private bool loginSuccessful = false;
         public LoginWindow(string role)
         {
             InitializeComponent();
             Role = role;
             ChangeColorBasedOnRole(role);
+            
         }
 
         private void ChangeColorBasedOnRole(string role)
@@ -52,6 +53,9 @@ namespace ST10446806_PROG6212_POEPART1.Windows
             var user = await context.Users
                 .FirstOrDefaultAsync(u => u.Username == username && u.Password == password && u.Role == roleEnum);
 
+            loginSuccessful = true;
+          
+
             if (user != null)
             {
                 MessageBox.Show($"Welcome {user.FullName} ({user.Role})!");
@@ -76,6 +80,13 @@ namespace ST10446806_PROG6212_POEPART1.Windows
             {
                 MessageBox.Show("Invalid username or password.", "Login Failed", MessageBoxButton.OK, MessageBoxImage.Error);
             }
+        }
+        private void LoginWindow_Closing(object sender, System.ComponentModel.CancelEventArgs e)
+        {
+            // Open the login/roles window when the user clicks X
+            RolesWindow rolesWindow = new RolesWindow();
+            rolesWindow.WindowStartupLocation = WindowStartupLocation.CenterScreen;
+            rolesWindow.Show();
         }
     }
 }
