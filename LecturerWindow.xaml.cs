@@ -1,5 +1,6 @@
 ﻿using Microsoft.Win32;
 using ST10446806_PROG6212_POEPART1.Data;
+using ST10446806_PROG6212_POEPART1.Helpers;
 using ST10446806_PROG6212_POEPART1.Windows;
 using System;
 using System.Collections.ObjectModel;
@@ -12,6 +13,7 @@ namespace ST10446806_PROG6212_POEPART1
     public partial class LecturerWindow : Window
     {
         private LecturerProfile currentProfile;
+        private bool loginSuccessful = false;
 
         // Uploaded documents for current claim
         public ObservableCollection<UploadedFile> SelectedDocumentPaths { get; set; } =
@@ -118,9 +120,7 @@ namespace ST10446806_PROG6212_POEPART1
                 }
             }
 
-            // SAVE CLAIM TO DATABASE
-            using var context = new ApplicationDbContext();
-
+            // Create claim object first
             var claim = new Claim
             {
                 LecturerID = currentProfile.LecturerID,
@@ -135,14 +135,19 @@ namespace ST10446806_PROG6212_POEPART1
 
                 // Default values to avoid NULL insert
                 ApprovedBy = "Pending",
-               
             };
 
+            // Validate claim rules BEFORE saving
+            if (!Helpers.ClaimRules.ValidateClaim(claim))
+            {
+                MessageBox.Show("Claim does not meet policy rules (hours, hourly rate, or missing documents).");
+                return;
+            }
+
+            // Save to database
+            using var context = new ApplicationDbContext();
             context.Claims.Add(claim);
             context.SaveChanges();
-
-
-           
 
             MessageBox.Show($"Claim submitted with {claim.Documents.Count} document(s).");
 
@@ -154,6 +159,7 @@ namespace ST10446806_PROG6212_POEPART1
             HoursBox.Clear();
             HourlyRateBox.Clear();
         }
+
 
         private void UploadDocument_Click(object sender, RoutedEventArgs e)
         {
@@ -190,6 +196,35 @@ namespace ST10446806_PROG6212_POEPART1
             }
         }
 
+        private void ResetClaims_Click(object sender, RoutedEventArgs e)
+        {
+            var result = MessageBox.Show(
+                "Are you sure you want to delete all your claims?",
+                "Confirm Reset",
+                MessageBoxButton.YesNo,
+                MessageBoxImage.Warning);
+
+            if (result == MessageBoxResult.Yes)
+            {
+                using var context = new ApplicationDbContext();
+
+                // Remove only this lecturer's claims
+                var myClaims = context.Claims
+                    .Where(c => c.LecturerID == currentProfile.LecturerID)
+                    .ToList();
+
+                context.Claims.RemoveRange(myClaims);
+                context.SaveChanges();
+
+                // Clear UI list
+                SelectedDocumentPaths.Clear();
+                LoadMyClaims();
+
+                MessageBox.Show("All your claims have been reset.");
+            }
+        }
+
+
         private void RemoveDocument_MouseDown(object sender, MouseButtonEventArgs e)
         {
             if (sender is System.Windows.Controls.TextBlock tb &&
@@ -224,17 +259,24 @@ namespace ST10446806_PROG6212_POEPART1
 
         private void LogoutButton_Click(object sender, RoutedEventArgs e)
         {
-            LoginWindow login = new LoginWindow("Lecturer");
-            this.Close();
-        }
-
-        private void LecturerWindow_Closing(object sender,
-            System.ComponentModel.CancelEventArgs e)
-        {
+            loginSuccessful = true; // mark as intentional logout
             RolesWindow rolesWindow = new RolesWindow();
             rolesWindow.WindowStartupLocation = WindowStartupLocation.CenterScreen;
             rolesWindow.Show();
+            this.Close();
         }
+
+        private void LecturerWindow_Closing(object sender, System.ComponentModel.CancelEventArgs e)
+        {
+            // Only open RolesWindow if not logging out
+            if (!loginSuccessful)
+            {
+                RolesWindow rolesWindow = new RolesWindow();
+                rolesWindow.WindowStartupLocation = WindowStartupLocation.CenterScreen;
+                rolesWindow.Show();
+            }
+        }
+
 
         public class UploadedFile
         {

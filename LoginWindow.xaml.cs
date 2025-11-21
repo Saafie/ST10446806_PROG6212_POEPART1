@@ -16,7 +16,7 @@ namespace ST10446806_PROG6212_POEPART1.Windows
             InitializeComponent();
             Role = role;
             ChangeColorBasedOnRole(role);
-            
+            this.Closing += LoginWindow_Closing;
         }
 
         private void ChangeColorBasedOnRole(string role)
@@ -54,7 +54,7 @@ namespace ST10446806_PROG6212_POEPART1.Windows
                 .FirstOrDefaultAsync(u => u.Username == username && u.Password == password && u.Role == roleEnum);
 
             loginSuccessful = true;
-          
+
 
             if (user != null)
             {
@@ -83,10 +83,13 @@ namespace ST10446806_PROG6212_POEPART1.Windows
         }
         private void LoginWindow_Closing(object sender, System.ComponentModel.CancelEventArgs e)
         {
-            // Open the login/roles window when the user clicks X
-            RolesWindow rolesWindow = new RolesWindow();
-            rolesWindow.WindowStartupLocation = WindowStartupLocation.CenterScreen;
-            rolesWindow.Show();
+            if (!loginSuccessful)
+            {
+                // Open the login/roles window when the user clicks X
+                RolesWindow rolesWindow = new RolesWindow();
+                rolesWindow.WindowStartupLocation = WindowStartupLocation.CenterScreen;
+                rolesWindow.Show();
+            }
         }
     }
 }

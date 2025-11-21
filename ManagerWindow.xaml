@@ -126,7 +126,7 @@
         </ListView>
 
         <!-- Close button -->
-        <Button Content="Close" Width="100" Height="30" Margin="0,20,0,0" 
-                Click="CloseButton_Click" Background="#EBEBFF"/>
+        <Button Content="Log Out" Width="100" Height="30" Margin="0,20,0,0" 
+                Click="Logout_Click" Background="#EBEBFF"/>
     </StackPanel>
 </Window>

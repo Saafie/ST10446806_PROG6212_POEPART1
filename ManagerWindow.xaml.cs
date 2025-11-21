@@ -1,6 +1,6 @@
 ﻿using ST10446806_PROG6212_POEPART1.Data;
-using ST10446806_PROG6212_POEPART1.Models;
 using ST10446806_PROG6212_POEPART1.Windows;
+using System.Collections.Generic;
 using System.Linq;
 using System.Windows;
 using System.Windows.Controls;
@@ -10,23 +10,20 @@ namespace ST10446806_PROG6212_POEPART1
 {
     public partial class ManagerWindow : Window
     {
+        private List<Claim> claims;
         private bool loginSuccessful = false;
 
         public ManagerWindow(User user)
         {
             InitializeComponent();
+            using var context = new ApplicationDbContext();
+            claims = context.Claims.ToList();
             RefreshList();
+            this.Closing += ManagerWindow_Closing;
         }
 
         private void RefreshList()
         {
-            using var context = new ApplicationDbContext();
-
-            // Load ALL claims from DB
-            var claims = context.Claims
-                .OrderByDescending(c => c.SubmittedDate)
-                .ToList();
-
             ApprovalList.ItemsSource = null;
             ApprovalList.ItemsSource = claims;
         }
@@ -35,21 +32,23 @@ namespace ST10446806_PROG6212_POEPART1
         {
             if (sender is Button btn && btn.Tag is Claim claim)
             {
-                using var context = new ApplicationDbContext();
-                var dbClaim = context.Claims.FirstOrDefault(c => c.ClaimID == claim.ClaimID);
-
-                if (dbClaim != null)
+                // Only proceed if Coordinator approved
+                if (claim.Status == "Coordinator Approved")
                 {
-                    if (dbClaim.Status == "Coordinator Approved")
-                    {
-                        dbClaim.Status = "Approved by Manager";
-                        context.SaveChanges();
-                        RefreshList();
-                    }
-                    else
-                    {
-                        MessageBox.Show("Only coordinator-approved claims can be approved.");
-                    }
+                    claim.Status = "Approved by Manager";
+
+                    using var context = new ApplicationDbContext();
+
+                    // Attach the claim to the context and update
+                    context.Claims.Attach(claim);
+                    context.Entry(claim).Property(c => c.Status).IsModified = true;
+                    context.SaveChanges();
+
+                    RefreshList();
+                }
+                else
+                {
+                    MessageBox.Show("Only claims approved by the Coordinator can be approved by the Manager.");
                 }
             }
         }
@@ -58,43 +57,41 @@ namespace ST10446806_PROG6212_POEPART1
         {
             if (sender is Button btn && btn.Tag is Claim claim)
             {
-                using var context = new ApplicationDbContext();
-                var dbClaim = context.Claims.FirstOrDefault(c => c.ClaimID == claim.ClaimID);
-
-                if (dbClaim != null)
+                // Only proceed if Coordinator approved
+                if (claim.Status == "Coordinator Approved")
                 {
-                    if (dbClaim.Status == "Coordinator Approved")
-                    {
-                        dbClaim.Status = "Rejected by Manager";
-                        context.SaveChanges();
-                        RefreshList();
-                    }
-                    else
-                    {
-                        MessageBox.Show("Only coordinator-approved claims can be rejected.");
-                    }
+                    claim.Status = "Rejected by Manager";
+
+                    using var context = new ApplicationDbContext();
+
+                    // Attach the claim to the context and update
+                    context.Claims.Attach(claim);
+                    context.Entry(claim).Property(c => c.Status).IsModified = true;
+                    context.SaveChanges();
+
+                    RefreshList();
+                }
+                else
+                {
+                    MessageBox.Show("Only claims approved by the Coordinator can be rejected by the Manager.");
                 }
             }
         }
 
+
+
         private void Document_Click(object sender, MouseButtonEventArgs e)
         {
-            if (sender is TextBlock tb && tb.DataContext is string filePath)
+            if (sender is TextBlock tb && tb.DataContext != null)
             {
+                string filePath = tb.DataContext.ToString();
                 if (System.IO.File.Exists(filePath))
                 {
-                    try
+                    System.Diagnostics.Process.Start(new System.Diagnostics.ProcessStartInfo
                     {
-                        System.Diagnostics.Process.Start(new System.Diagnostics.ProcessStartInfo
-                        {
-                            FileName = filePath,
-                            UseShellExecute = true
-                        });
-                    }
-                    catch (Exception ex)
-                    {
-                        MessageBox.Show($"Cannot open document: {ex.Message}");
-                    }
+                        FileName = filePath,
+                        UseShellExecute = true
+                    });
                 }
                 else
                 {
@@ -103,12 +100,23 @@ namespace ST10446806_PROG6212_POEPART1
             }
         }
 
-        private void CloseButton_Click(object sender, RoutedEventArgs e)
+        private void Logout_Click(object sender, RoutedEventArgs e)
         {
-            LoginWindow login = new LoginWindow("Manager");
-            login.WindowStartupLocation = WindowStartupLocation.CenterScreen;
-            login.Show();
+            loginSuccessful = true; // mark as intentional logout
+            RolesWindow rolesWindow = new RolesWindow();
+            rolesWindow.WindowStartupLocation = WindowStartupLocation.CenterScreen;
+            rolesWindow.Show();
             this.Close();
+        }
+
+        private void ManagerWindow_Closing(object sender, System.ComponentModel.CancelEventArgs e)
+        {
+            if (!loginSuccessful)
+            {
+                RolesWindow rolesWindow = new RolesWindow();
+                rolesWindow.WindowStartupLocation = WindowStartupLocation.CenterScreen;
+                rolesWindow.Show();
+            }
         }
     }
 }

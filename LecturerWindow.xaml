@@ -78,6 +78,18 @@
                 </GridView>
             </ListView.View>
         </ListView>
+        <!-- Place this where you want the button in your LecturerWindow UI -->
+        <Button 
+    x:Name="ResetClaimsButton"
+    Content="Reset Claims"
+    Width="100"
+    Height="20"
+    Margin="10"
+    HorizontalAlignment="Left"
+    Background="#FFDD5555"
+    Foreground="White"
+    FontWeight="Bold"
+    Click="ResetClaims_Click"/>
 
         <Button Content="LogOut" Width="200" Height="32" Margin="15" Click=" LogoutButton_Click" Background="#FFF0F2"/>
     </StackPanel>
