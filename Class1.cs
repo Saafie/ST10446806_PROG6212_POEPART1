@@ -1,10 +1,11 @@
 ﻿using System;
+    using System;
 using System.Collections.Generic;
+    using System.Collections.Generic;
 using System.Linq;
+using System.Reflection.Emit;
 using System.Text;
 using System.Threading.Tasks;
-    using System;
-    using System.Collections.Generic;
 
 namespace ST10446806_PROG6212_POEPART1
 {
@@ -52,27 +53,24 @@ namespace ST10446806_PROG6212_POEPART1
 
         public string DocumentStatus => Documents.Count == 0 ? "No docs" : $"{Documents.Count} doc(s)";
         public string DateFormatted => $"{Day}/{Month}/{Year}";
-    
 
-  
-        
 
-        public override string ToString()
+
+
+
+        protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
-            // Show claim info with document status
-            return $"Lecturer {LecturerID} | Claim #{ClaimID}: {TotalHours}h - R{Amount} - {Status} ({DocumentStatus})";
+            modelBuilder.Entity<User>().HasData(
+                new User { UserID = 1, FullName = "John Doe", Username = "lecturer1", Password = "1234", Role = UserRole.Lecturer },
+                new User { UserID = 2, FullName = "Sarah Smith", Username = "coordinator1", Password = "1234", Role = UserRole.Coordinator },
+                new User { UserID = 3, FullName = "Michael Brown", Username = "manager1", Password = "1234", Role = UserRole.Manager }
+            );
+
+            modelBuilder.Entity<User>().HasKey(u => u.UserID);
+            modelBuilder.Entity<Claim>().HasKey(c => c.ClaimID);
+            modelBuilder.Entity<LecturerProfile>().HasKey(l => l.LecturerID);
         }
 
-        // Simple in-memory user store
-        public static class UserRepository
-        {
-            public static List<User> Users = new List<User>
-        {
-            new User { UserID = 1, FullName = "John Doe", Username = "lecturer1", Password = "1234", Role = UserRole.Lecturer },
-            new User { UserID = 2, FullName = "Sarah Smith", Username = "coordinator1", Password = "1234", Role = UserRole.Coordinator },
-            new User { UserID = 3, FullName = "Michael Brown", Username = "manager1", Password = "1234", Role = UserRole.Manager }
-        };
-        }
     }
 }
 

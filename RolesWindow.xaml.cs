@@ -1,12 +1,7 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿using ST10446806_PROG6212_POEPART1;
 using System.Windows;
-using System.Windows.Controls;
 
-namespace ST10446806_PROG6212_POEPART1
+namespace ST10446806_PROG6212_POEPART1.Windows
 {
     public partial class RolesWindow : Window
     {
@@ -15,30 +10,16 @@ namespace ST10446806_PROG6212_POEPART1
             InitializeComponent();
         }
 
-        private void ClickLecturer(object sender, RoutedEventArgs e)
-        {
-            OpenLoginWindow("Lecturer");
-        }
-
-        private void ClickCoordinator(object sender, RoutedEventArgs e)
-        {
-            OpenLoginWindow("Coordinator");
-        }
-
-        private void ClickManager(object sender, RoutedEventArgs e)
-        {
-            OpenLoginWindow("Manager");
-        }
+        private void ClickLecturer(object sender, RoutedEventArgs e) => OpenLoginWindow("Lecturer");
+        private void ClickCoordinator(object sender, RoutedEventArgs e) => OpenLoginWindow("Coordinator");
+        private void ClickManager(object sender, RoutedEventArgs e) => OpenLoginWindow("Manager");
 
         private void OpenLoginWindow(string role)
-        { // Close the roles window if you want to move on
-            
-            // Create and show the LoginWindow, passing the selected role
-            var loginWindow = new LoginWindow(role);
-            loginWindow.Show();
-
+        {
+            var login = new LoginWindow(role);
+            login.WindowStartupLocation = WindowStartupLocation.CenterScreen;
+            login.Show();
             this.Close();
-
         }
     }
 }
