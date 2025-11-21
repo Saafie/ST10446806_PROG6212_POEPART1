@@ -39,7 +39,7 @@ namespace ST10446806_PROG6212_POEPART1
             if ((sender as Button)?.Tag is Claim selected)
             {
                 // Validate claim rules first
-                if (!ClaimRules.ValidateClaim(selected))
+                if (CoordinatorClaimRules.ValidateClaim(selected))
                 {
                     MessageBox.Show("Cannot approve: Claim violates policy rules (hours, hourly rate, or missing documents).");
 

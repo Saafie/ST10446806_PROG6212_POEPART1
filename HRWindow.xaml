@@ -1,7 +1,7 @@
 ﻿<Window x:Class="ST10446806_PROG6212_POEPART1.HRWindow"
         xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
-      Title="HR Window" Height="450" Width="800">
+      Title="HR Window" Height="450" Width="800" Background="#D2DFEF">
     <Grid Margin="10">
 
         <Grid.ColumnDefinitions>
@@ -11,28 +11,27 @@
 
         <!-- Lecturer List -->
         <GroupBox Header="Lecturers" Grid.Column="0" Margin="5">
-            <ListBox Name="LecturerListBox" DisplayMemberPath="FullName" SelectionChanged="LecturerListBox_SelectionChanged"/>
+            <ListBox Name="LecturerListBox" DisplayMemberPath="FullName" SelectionChanged="LecturerListBox_SelectionChanged" Background="#E0EAFF"/>
         </GroupBox>
 
         <!-- Lecturer Details -->
-        <GroupBox Header="Lecturer Details" Grid.Column="1" Margin="5">
+        <GroupBox Header="Lecturer Details" Grid.Column="1" Margin="5" Background="#D2DFEF">
             <StackPanel Margin="10">
                 <TextBlock Text="Full Name"/>
-                <TextBox Name="FullNameTextBox" Margin="0,5,0,10"/>
+                <TextBox Name="FullNameTextBox" Margin="0,5,0,10" Background="#E0EAFF"/>
 
                 <TextBlock Text="Email"/>
-                <TextBox Name="EmailTextBox" Margin="0,5,0,10"/>
+                <TextBox Name="EmailTextBox" Margin="0,5,0,10" Background="#E0EAFF"/>
 
                 <TextBlock Text="Phone Number"/>
-                <TextBox Name="PhoneTextBox" Margin="0,5,0,10"/>
+                <TextBox Name="PhoneTextBox" Margin="0,5,0,10" Background="#E0EAFF"/>
 
-                <TextBlock Text="Hourly Rate"/>
-                <TextBox Name="HourlyRateTextBox" Margin="0,5,0,10"/>
+              
 
                 <TextBlock Text="Bank Details"/>
-                <TextBox Name="BankDetailsTextBox" Margin="0,5,0,10"/>
+                <TextBox Name="BankDetailsTextBox" Margin="0,5,0,10" Background="#E0EAFF"/>
 
-                <Button Name="SaveButton" Content="Save" Width="100" Click="SaveButton_Click"/>
+                <Button Name="SaveButton" Content="Save" Width="100" Click="SaveButton_Click" Background="#D2DFEF"/>
             </StackPanel>
         </GroupBox>
 

@@ -27,7 +27,7 @@ namespace ST10446806_PROG6212_POEPART1.Helpers
         public static bool ValidateClaim(Claim claim)
         {
             if (claim.TotalHours > MaxHoursPerDay) return false;
-            if (claim.Amount > MaxTotalAmount) return false;
+            if (claim.Amount < MaxTotalAmount) return false;
             if (claim.Documents == null || claim.Documents.Count == 0) return false;
 
             return true;

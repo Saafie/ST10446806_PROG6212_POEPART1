@@ -34,7 +34,7 @@ namespace ST10446806_PROG6212_POEPART1.Windows
                     this.Background = new SolidColorBrush(Color.FromRgb(212, 212, 250));
                     break;
                 case "HR":
-                    this.Background = new SolidColorBrush(Color.FromRgb(36, 36, 36);
+                    this.Background = new SolidColorBrush(Color.FromRgb(224, 234, 255));
                     break;
             }
         }

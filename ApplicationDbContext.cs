@@ -41,32 +41,32 @@ namespace ST10446806_PROG6212_POEPART1.Data
                 new User { UserID = 5, FullName = "Miss Piggy", Username = "coordinator2", Password = "1234", Role = UserRole.Coordinator },
                 new User { UserID = 6, FullName = "Linken Black", Username = "manager2", Password = "1234", Role = UserRole.Manager },
                 new User { UserID = 7, FullName = "Emma HR", Username = "hr1", Password = "1234", Role = UserRole.HR },
-                 new User { UserID = 7, FullName = "Kermit Frog", Username = "hr2", Password = "1234", Role = UserRole.HR }
+                 new User { UserID = 8, FullName = "Kermit Frog", Username = "hr2", Password = "1234", Role = UserRole.HR }
             );
 
 
 
             // Seed LecturerProfiles
-            modelBuilder.Entity<LecturerProfile>().HasData(
+    modelBuilder.Entity<LecturerProfile>().HasData(
     new LecturerProfile
-    {
+    {   FullName = "Doe Eye",
         LecturerID = 1,
         UserID = 1,
-        HourlyRate = 300,
+        
         BankDetails = "Bank A",
-        Email = "doe.eye@example.com",
+        Email = "doe.eye@gmail.com",
         PhoneNumber = "1234567890"
     },
     new LecturerProfile
     {
+        FullName = "John Smith",
         LecturerID = 2,
-        UserID = 4,
-        HourlyRate = 350,
+        UserID = 2,
+        
         BankDetails = "Bank B",
-        Email = "jane.doe@example.com",
+        Email = "john.smith@gmail.com",
         PhoneNumber = "0987654321"
-    }
-);
+    });
 
         }
 

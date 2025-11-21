@@ -38,7 +38,7 @@ namespace ST10446806_PROG6212_POEPART1
                 FullNameTextBox.Text = lecturer.FullName ?? "";
                 EmailTextBox.Text = lecturer.Email ?? "";
                 PhoneTextBox.Text = lecturer.PhoneNumber ?? "";
-                HourlyRateTextBox.Text = lecturer.HourlyRate.ToString("0.00");
+                
                 BankDetailsTextBox.Text = lecturer.BankDetails ?? "";
             }
         }
@@ -63,10 +63,7 @@ namespace ST10446806_PROG6212_POEPART1
                     BankDetails = BankDetailsTextBox.Text
                 };
 
-                if (decimal.TryParse(HourlyRateTextBox.Text, out decimal rate))
-                    selectedLecturer.HourlyRate = rate;
-                else
-                    selectedLecturer.HourlyRate = 0;
+                
 
                 context.LecturerProfiles.Add(selectedLecturer);
                 context.SaveChanges();
@@ -80,8 +77,7 @@ namespace ST10446806_PROG6212_POEPART1
                 selectedLecturer.Email = EmailTextBox.Text;
                 selectedLecturer.PhoneNumber = PhoneTextBox.Text;
 
-                if (decimal.TryParse(HourlyRateTextBox.Text, out decimal rate))
-                    selectedLecturer.HourlyRate = rate;
+               
 
                 selectedLecturer.BankDetails = BankDetailsTextBox.Text;
 
@@ -101,7 +97,7 @@ namespace ST10446806_PROG6212_POEPART1
             FullNameTextBox.Clear();
             EmailTextBox.Clear();
             PhoneTextBox.Clear();
-            HourlyRateTextBox.Clear();
+            
             BankDetailsTextBox.Clear();
             LecturerListBox.SelectedItem = null;
             selectedLecturer = null;
