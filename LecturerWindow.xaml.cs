@@ -1,4 +1,5 @@
 ﻿using Microsoft.Win32;
+using ST10446806_PROG6212_POEPART1.Windows;
 using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
@@ -18,7 +19,7 @@ namespace ST10446806_PROG6212_POEPART1
         // Only use one collection for selected documents
         public ObservableCollection<UploadedFile> SelectedDocumentPaths { get; set; } = new ObservableCollection<UploadedFile>();
 
-        public LecturerWindow()
+        public LecturerWindow(User user)
         {
             InitializeComponent();
             ClaimList.ItemsSource = claims;

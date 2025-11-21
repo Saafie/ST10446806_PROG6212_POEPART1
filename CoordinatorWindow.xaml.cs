@@ -1,5 +1,6 @@
 ﻿
 using Microsoft.Win32;
+using ST10446806_PROG6212_POEPART1.Windows;
 using System.Collections.Generic;
 using System.Linq;
 using System.Windows;
@@ -12,7 +13,7 @@ namespace ST10446806_PROG6212_POEPART1
     {
         private List<Claim> claims;
         private bool loginSuccessful = false;
-        public CoordinatorWindow()
+        public CoordinatorWindow(User user)
         {
             InitializeComponent();
             claims = LecturerWindow.GetClaims(); // shared static list from LecturerWindow

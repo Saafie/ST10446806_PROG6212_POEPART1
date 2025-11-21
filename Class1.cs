@@ -55,22 +55,6 @@ namespace ST10446806_PROG6212_POEPART1
         public string DateFormatted => $"{Day}/{Month}/{Year}";
 
 
-
-
-
-        protected override void OnModelCreating(ModelBuilder modelBuilder)
-        {
-            modelBuilder.Entity<User>().HasData(
-                new User { UserID = 1, FullName = "John Doe", Username = "lecturer1", Password = "1234", Role = UserRole.Lecturer },
-                new User { UserID = 2, FullName = "Sarah Smith", Username = "coordinator1", Password = "1234", Role = UserRole.Coordinator },
-                new User { UserID = 3, FullName = "Michael Brown", Username = "manager1", Password = "1234", Role = UserRole.Manager }
-            );
-
-            modelBuilder.Entity<User>().HasKey(u => u.UserID);
-            modelBuilder.Entity<Claim>().HasKey(c => c.ClaimID);
-            modelBuilder.Entity<LecturerProfile>().HasKey(l => l.LecturerID);
-        }
-
     }
 }
 
