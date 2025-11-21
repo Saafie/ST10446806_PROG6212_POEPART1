@@ -13,6 +13,7 @@ namespace ST10446806_PROG6212_POEPART1.Windows
         private void ClickLecturer(object sender, RoutedEventArgs e) => OpenLoginWindow("Lecturer");
         private void ClickCoordinator(object sender, RoutedEventArgs e) => OpenLoginWindow("Coordinator");
         private void ClickManager(object sender, RoutedEventArgs e) => OpenLoginWindow("Manager");
+        private void ClickHR(object sender, RoutedEventArgs e) => OpenLoginWindow("HR");
 
         private void OpenLoginWindow(string role)
         {

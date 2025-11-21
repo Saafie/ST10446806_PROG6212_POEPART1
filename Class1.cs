@@ -34,6 +34,9 @@ namespace ST10446806_PROG6212_POEPART1
         public int UserID { get; set; }
         public decimal HourlyRate { get; set; }
         public string BankDetails { get; set; }
+        public string FullName { get; internal set; }
+        public string Email { get; internal set; }
+        public string PhoneNumber { get; internal set; }
     }
 
     // Monthly claim submitted by a lecturer

@@ -9,9 +9,10 @@
 
     <Canvas x:Name="CircleCanvas" Background="#747FB8" RenderTransformOrigin="0.5,0.5" Margin="0,0,-1,0">
 
-        <RadioButton Background="#CFD6FF" x:Name="LecturerButton" Content="Lecturer" Width="80" Height="30" Click="ClickLecturer" Canvas.Left="62" Canvas.Top="39" HorizontalAlignment="Center" VerticalAlignment="Top"/>
-        <RadioButton Background="#CFD6FF" x:Name="CoordinatorButton" Content="Coordinator" Width="100" Height="30" Canvas.Top="87"  Click="ClickCoordinator" Canvas.Left="62" HorizontalAlignment="Center" VerticalAlignment="Top"/>
-        <RadioButton Background="#CFD6FF" x:Name="ManagerButton" Content="Manager" Width="100" Height="30" Canvas.Top="135"  Click="ClickManager" Canvas.Left="62" HorizontalAlignment="Left" VerticalAlignment="Top"/>
+        <RadioButton Background="#CFD6FF" x:Name="LecturerButton" Content="Lecturer" Width="80" Height="30" Click="ClickLecturer" Canvas.Left="62" Canvas.Top="33" HorizontalAlignment="Center" VerticalAlignment="Top"/>
+        <RadioButton Background="#CFD6FF" x:Name="CoordinatorButton" Content="Coordinator" Width="100" Height="30" Canvas.Top="72"  Click="ClickCoordinator" Canvas.Left="62" HorizontalAlignment="Center" VerticalAlignment="Top"/>
+        <RadioButton Background="#CFD6FF" x:Name="ManagerButton" Content="Manager" Width="100" Height="30" Canvas.Top="107"  Click="ClickManager" Canvas.Left="62" HorizontalAlignment="Center" VerticalAlignment="Top"/>
+        <RadioButton Background="#CFD6FF" x:Name="HRButton" Content="HR" Width="127" Height="59" Canvas.Top="145"  Click="ClickHR" Canvas.Left="62" HorizontalAlignment="Center" VerticalAlignment="Top"/>
     </Canvas>
 
 </Window>
