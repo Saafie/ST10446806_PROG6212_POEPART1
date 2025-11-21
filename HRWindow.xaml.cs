@@ -1,8 +1,13 @@
 ﻿using ST10446806_PROG6212_POEPART1.Data;
 using ST10446806_PROG6212_POEPART1.Models;
+using System.IO;
 using System.Linq;
 using System.Windows;
 using System.Windows.Controls;
+using System.Windows.Documents;
+using iTextSharp.text;
+using iTextSharp.text.pdf;
+
 
 namespace ST10446806_PROG6212_POEPART1
 {
@@ -91,6 +96,63 @@ namespace ST10446806_PROG6212_POEPART1
             LoadLecturers();
             ClearFields();
         }
+
+        private void GenerateInvoice_Click(object sender, RoutedEventArgs e)
+        {
+            using var context = new ApplicationDbContext();
+
+            // Load only APPROVED claims
+            var approvedClaims = context.Claims
+                .Where(c => c.Status == "Manager Approved" || c.Status == "Coordinator Approved")
+                .ToList();
+
+            if (approvedClaims.Count == 0)
+            {
+                MessageBox.Show("No approved claims found to generate an invoice.");
+                return;
+            }
+
+            // Save PDF
+            string folder = System.IO.Path.Combine(AppDomain.CurrentDomain.BaseDirectory, "Invoices");
+            if (!Directory.Exists(folder))
+                Directory.CreateDirectory(folder);
+
+            string pdfPath = Path.Combine(folder, $"InvoiceReport_{DateTime.Now:yyyyMMdd_HHmm}.pdf");
+
+            // Create PDF document
+            var doc = new iTextSharp.text.Document();
+            PdfWriter.GetInstance(doc, new FileStream(pdfPath, FileMode.Create));
+            doc.Open();
+
+            // Title
+            var titleFont = FontFactory.GetFont(FontFactory.HELVETICA_BOLD, 18);
+            doc.Add(new iTextSharp.text.Paragraph("Monthly Invoice Report", titleFont));
+            doc.Add(new iTextSharp.text.Paragraph($"Generated: {DateTime.Now}\n\n"));
+
+
+            // Table
+            PdfPTable table = new PdfPTable(5); // 5 columns
+            table.AddCell("Lecturer ID");
+            table.AddCell("Hours Worked");
+            table.AddCell("Amount");
+            table.AddCell("Month");
+            table.AddCell("Status");
+
+            foreach (var claim in approvedClaims)
+            {
+                table.AddCell(claim.LecturerID.ToString());
+                table.AddCell(claim.TotalHours.ToString());
+                table.AddCell($"R{claim.Amount:0.00}");
+                table.AddCell($"{claim.Month}/{claim.Year}");
+                table.AddCell(claim.Status);
+            }
+
+            doc.Add(table);
+            doc.Close();
+
+            MessageBox.Show($"Invoice Report Generated!\nSaved at:\n{pdfPath}");
+        }
+
 
         private void ClearFields()
         {

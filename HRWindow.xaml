@@ -32,6 +32,12 @@
                 <TextBox Name="BankDetailsTextBox" Margin="0,5,0,10" Background="#E0EAFF"/>
 
                 <Button Name="SaveButton" Content="Save" Width="100" Click="SaveButton_Click" Background="#D2DFEF"/>
+
+                <Button Content="Generate Invoice Report"
+        Width="200"
+        Margin="10"
+        Click="GenerateInvoice_Click" Background="#D2DFEF"/>
+
             </StackPanel>
         </GroupBox>
 
