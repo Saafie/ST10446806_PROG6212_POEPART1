@@ -1,7 +1,7 @@
 ﻿using Microsoft.Win32;
+using ST10446806_PROG6212_POEPART1.Data;
 using ST10446806_PROG6212_POEPART1.Windows;
 using System;
-using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Linq;
 using System.Windows;
@@ -11,22 +11,79 @@ namespace ST10446806_PROG6212_POEPART1
 {
     public partial class LecturerWindow : Window
     {
-        private static List<Claim> claims = new List<Claim>();
-        private static int claimCounter = 1;
+        private LecturerProfile currentProfile;
 
-        private LecturerProfile lecturer = new LecturerProfile { LecturerID = 1 };
+        // Uploaded documents for current claim
+        public ObservableCollection<UploadedFile> SelectedDocumentPaths { get; set; } =
+            new ObservableCollection<UploadedFile>();
 
-        // Only use one collection for selected documents
-        public ObservableCollection<UploadedFile> SelectedDocumentPaths { get; set; } = new ObservableCollection<UploadedFile>();
-
-        public LecturerWindow(User user)
+        public LecturerWindow(User currentUser)
         {
             InitializeComponent();
-            ClaimList.ItemsSource = claims;
-            DocumentsList.ItemsSource = SelectedDocumentPaths; // Bind ItemsControl
+
+            using var context = new ApplicationDbContext();
+
+            // Load lecturer profile
+            currentProfile = context.LecturerProfiles
+                .FirstOrDefault(l => l.UserID == currentUser.UserID);
+
+            HoursBox.TextChanged += InputChanged_UpdateTotal;
+            HourlyRateBox.TextChanged += InputChanged_UpdateTotal;
+
+            if (currentProfile == null)
+            {
+                MessageBox.Show("Lecturer profile not found in database.");
+                this.Close();
+                return;
+            }
+
+            // Load only this lecturer's claims
+            LoadMyClaims();
+
+            // Bind uploaded documents list
+            DocumentsList.ItemsSource = SelectedDocumentPaths;
+
             this.Closing += LecturerWindow_Closing;
         }
-        private bool loginSuccessful = false;
+
+        // Load only CLAIMS FOR THIS LOGGED-IN LECTURER
+        private void LoadMyClaims()
+        {
+            using var context = new ApplicationDbContext();
+
+            ClaimList.ItemsSource = context.Claims
+                .Where(c => c.LecturerID == currentProfile.LecturerID)
+                .ToList();
+        }
+
+
+        private void InputChanged_UpdateTotal(object sender, System.Windows.Controls.TextChangedEventArgs e)
+        {
+            if (decimal.TryParse(HoursBox.Text, out decimal hours) &&
+                decimal.TryParse(HourlyRateBox.Text, out decimal rate))
+            {
+                // Validation: prevent negative or unrealistic values
+                if (hours < 0 || hours > 24)
+                {
+                    TotalPaymentLabel.Text = "Invalid hours";
+                    return;
+                }
+
+                if (rate < 0 || rate > 5000) // example max hourly rate
+                {
+                    TotalPaymentLabel.Text = "Invalid rate";
+                    return;
+                }
+
+                decimal total = hours * rate;
+                TotalPaymentLabel.Text = $"R{total:0.00}";
+            }
+            else
+            {
+                TotalPaymentLabel.Text = "R0.00";
+            }
+        }
+
 
         private void Submit_Click(object sender, RoutedEventArgs e)
         {
@@ -44,37 +101,29 @@ namespace ST10446806_PROG6212_POEPART1
 
             if (SelectedDocumentPaths.Count == 0)
             {
-                MessageBox.Show("Please upload at least one document before submitting the claim.");
-                return;
-            }
-
-            if (SelectedDocumentPaths.Count == 0)
-            {
-                MessageBox.Show("Please upload at least one document before submitting the claim.");
+                MessageBox.Show("Please upload at least one document.");
                 return;
             }
 
             // Allowed file extensions
-            var allowedExtensions = new[] { ".pdf", ".xlsx", ".doc", ".docx" };
+            string[] allowedExtensions = { ".pdf", ".xlsx", ".doc", ".docx" };
 
-            // Check each file
-            foreach (var uploadedFile in SelectedDocumentPaths)
+            foreach (var file in SelectedDocumentPaths)
             {
-                // Assuming UploadedFile has a property FilePath
-                string ext = System.IO.Path.GetExtension(uploadedFile.FilePath).ToLower();
+                string ext = System.IO.Path.GetExtension(file.FilePath).ToLower();
                 if (!allowedExtensions.Contains(ext))
                 {
-                    MessageBox.Show($"Invalid file type: {ext}. Only PDF, Excel (.xlsx), and Word (.doc/.docx) files are allowed.");
+                    MessageBox.Show($"Invalid file type: {ext}");
                     return;
                 }
             }
 
-
+            // SAVE CLAIM TO DATABASE
+            using var context = new ApplicationDbContext();
 
             var claim = new Claim
             {
-                ClaimID = claimCounter++,
-                LecturerID = lecturer.LecturerID,
+                LecturerID = currentProfile.LecturerID,
                 Day = DateTime.Now.Day,
                 Month = DateTime.Now.Month,
                 Year = DateTime.Now.Year,
@@ -82,17 +131,28 @@ namespace ST10446806_PROG6212_POEPART1
                 Amount = hours * hourlyRate,
                 Status = "Documents uploaded",
                 SubmittedDate = DateTime.Now,
-                Documents = SelectedDocumentPaths.Select(f => f.FilePath).ToList()
+                Documents = SelectedDocumentPaths.Select(f => f.FilePath).ToList(),
+
+                // Default values to avoid NULL insert
+                ApprovedBy = "Pending",
+               
             };
 
-            claims.Add(claim);
-            RefreshClaims();
+            context.Claims.Add(claim);
+            context.SaveChanges();
+
+
+           
 
             MessageBox.Show($"Claim submitted with {claim.Documents.Count} document(s).");
 
-            // Clear uploaded documents and reset UI
+            // Refresh claim list
+            LoadMyClaims();
+
+            // Clear form
             SelectedDocumentPaths.Clear();
             HoursBox.Clear();
+            HourlyRateBox.Clear();
         }
 
         private void UploadDocument_Click(object sender, RoutedEventArgs e)
@@ -105,29 +165,35 @@ namespace ST10446806_PROG6212_POEPART1
 
             if (dlg.ShowDialog() == true)
             {
-                // Ensure the app folder exists
-                string appDocsFolder = System.IO.Path.Combine(AppDomain.CurrentDomain.BaseDirectory, "UploadedDocs");
+                string appDocsFolder =
+                    System.IO.Path.Combine(AppDomain.CurrentDomain.BaseDirectory, "UploadedDocs");
+
                 if (!System.IO.Directory.Exists(appDocsFolder))
                     System.IO.Directory.CreateDirectory(appDocsFolder);
 
-                // Copy selected files to the app folder
                 foreach (var file in dlg.FileNames)
                 {
-                    string destFile = System.IO.Path.Combine(appDocsFolder, System.IO.Path.GetFileName(file));
+                    string destFile = System.IO.Path.Combine(appDocsFolder,
+                        System.IO.Path.GetFileName(file));
+
                     if (!System.IO.File.Exists(destFile))
                         System.IO.File.Copy(file, destFile);
 
                     if (!SelectedDocumentPaths.Any(f => f.FilePath == destFile))
-                        SelectedDocumentPaths.Add(new UploadedFile { FilePath = destFile });
+                    {
+                        SelectedDocumentPaths.Add(new UploadedFile
+                        {
+                            FilePath = destFile
+                        });
+                    }
                 }
-            } }
-
-
-
+            }
+        }
 
         private void RemoveDocument_MouseDown(object sender, MouseButtonEventArgs e)
         {
-            if (sender is System.Windows.Controls.TextBlock tb && tb.DataContext is UploadedFile file)
+            if (sender is System.Windows.Controls.TextBlock tb &&
+                tb.DataContext is UploadedFile file)
             {
                 SelectedDocumentPaths.Remove(file);
             }
@@ -135,72 +201,45 @@ namespace ST10446806_PROG6212_POEPART1
 
         private void Document_Click(object sender, MouseButtonEventArgs e)
         {
-            if (sender is System.Windows.Controls.TextBlock tb)
+            if (sender is System.Windows.Controls.TextBlock tb &&
+                tb.DataContext is UploadedFile file)
             {
-                string filePath = tb.Text;
-
-                if (System.IO.File.Exists(filePath))
+                if (System.IO.File.Exists(file.FilePath))
                 {
                     try
                     {
                         System.Diagnostics.Process.Start(new System.Diagnostics.ProcessStartInfo
                         {
-                            FileName = filePath,
+                            FileName = file.FilePath,
                             UseShellExecute = true
                         });
                     }
                     catch (Exception ex)
                     {
-                        MessageBox.Show($"Cannot open document: {ex.Message}");
+                        MessageBox.Show($"Cannot open file: {ex.Message}");
                     }
                 }
-                else
-                {
-                    MessageBox.Show("File not found.");
-                }
             }
-        }
-
-
-
-        private void RefreshClaims()
-        {
-            ClaimList.ItemsSource = null;
-            ClaimList.ItemsSource = claims;
         }
 
         private void LogoutButton_Click(object sender, RoutedEventArgs e)
         {
-            loginSuccessful = false; // Optional, since closing triggers RolesWindow
+            LoginWindow login = new LoginWindow("Lecturer");
             this.Close();
         }
 
-
-
-        public static List<Claim> GetClaims() => claims;
-    
-    public class UploadedFile
-    {
-        public string FilePath { get; set; }
-        public string FileName => System.IO.Path.GetFileName(FilePath);
-    }
-
-        private void LecturerWindow_Closing(object sender, System.ComponentModel.CancelEventArgs e)
+        private void LecturerWindow_Closing(object sender,
+            System.ComponentModel.CancelEventArgs e)
         {
-            if (!loginSuccessful)
-            {
-                // Only show RolesWindow if the user closed the window via X without logging in
-                RolesWindow rolesWindow = new RolesWindow();
-                rolesWindow.WindowStartupLocation = WindowStartupLocation.CenterScreen;
-                rolesWindow.Show();
-            }
+            RolesWindow rolesWindow = new RolesWindow();
+            rolesWindow.WindowStartupLocation = WindowStartupLocation.CenterScreen;
+            rolesWindow.Show();
         }
 
-
+        public class UploadedFile
+        {
+            public string FilePath { get; set; }
+            public string FileName => System.IO.Path.GetFileName(FilePath);
+        }
     }
 }
-
-
-
-
-

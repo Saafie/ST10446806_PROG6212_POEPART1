@@ -1,5 +1,6 @@
-﻿using ST10446806_PROG6212_POEPART1.Windows;
-using System.Collections.Generic;
+﻿using ST10446806_PROG6212_POEPART1.Data;
+using ST10446806_PROG6212_POEPART1.Models;
+using ST10446806_PROG6212_POEPART1.Windows;
 using System.Linq;
 using System.Windows;
 using System.Windows.Controls;
@@ -9,37 +10,46 @@ namespace ST10446806_PROG6212_POEPART1
 {
     public partial class ManagerWindow : Window
     {
-        private List<Claim> claims;
         private bool loginSuccessful = false;
+
         public ManagerWindow(User user)
         {
             InitializeComponent();
-            claims = LecturerWindow.GetClaims(); // shared static list from LecturerWindow
             RefreshList();
-            this.Closing += ManagerWindow_Closing;
         }
 
         private void RefreshList()
         {
+            using var context = new ApplicationDbContext();
+
+            // Load ALL claims from DB
+            var claims = context.Claims
+                .OrderByDescending(c => c.SubmittedDate)
+                .ToList();
+
             ApprovalList.ItemsSource = null;
-            // Show all claims submitted by lecturers
             ApprovalList.ItemsSource = claims;
         }
-
-       
 
         private void Approve_Click_Row(object sender, RoutedEventArgs e)
         {
             if (sender is Button btn && btn.Tag is Claim claim)
             {
-                if (claim.Status == "Coordinator Approved")
+                using var context = new ApplicationDbContext();
+                var dbClaim = context.Claims.FirstOrDefault(c => c.ClaimID == claim.ClaimID);
+
+                if (dbClaim != null)
                 {
-                    claim.Status = "Approved by Manager";
-                    RefreshList();
-                }
-                else
-                {
-                    MessageBox.Show("Only claims approved by coordinator can be approved by manager.");
+                    if (dbClaim.Status == "Coordinator Approved")
+                    {
+                        dbClaim.Status = "Approved by Manager";
+                        context.SaveChanges();
+                        RefreshList();
+                    }
+                    else
+                    {
+                        MessageBox.Show("Only coordinator-approved claims can be approved.");
+                    }
                 }
             }
         }
@@ -48,25 +58,29 @@ namespace ST10446806_PROG6212_POEPART1
         {
             if (sender is Button btn && btn.Tag is Claim claim)
             {
-                if (claim.Status == "Coordinator Approved")
+                using var context = new ApplicationDbContext();
+                var dbClaim = context.Claims.FirstOrDefault(c => c.ClaimID == claim.ClaimID);
+
+                if (dbClaim != null)
                 {
-                    claim.Status = "Rejected by Manager";
-                    RefreshList();
-                }
-                else
-                {
-                    MessageBox.Show("Only claims approved by coordinator can be rejected by manager.");
+                    if (dbClaim.Status == "Coordinator Approved")
+                    {
+                        dbClaim.Status = "Rejected by Manager";
+                        context.SaveChanges();
+                        RefreshList();
+                    }
+                    else
+                    {
+                        MessageBox.Show("Only coordinator-approved claims can be rejected.");
+                    }
                 }
             }
         }
 
         private void Document_Click(object sender, MouseButtonEventArgs e)
         {
-            if (sender is TextBlock tb && tb.DataContext != null)
+            if (sender is TextBlock tb && tb.DataContext is string filePath)
             {
-                // Assuming the ItemsControl binds a list of file paths
-                string filePath = tb.DataContext.ToString();
-
                 if (System.IO.File.Exists(filePath))
                 {
                     try
@@ -91,19 +105,10 @@ namespace ST10446806_PROG6212_POEPART1
 
         private void CloseButton_Click(object sender, RoutedEventArgs e)
         {
-            // Open the login window for manager role
             LoginWindow login = new LoginWindow("Manager");
-
-            // Close the current window
+            login.WindowStartupLocation = WindowStartupLocation.CenterScreen;
+            login.Show();
             this.Close();
-        }
-        private void ManagerWindow_Closing(object sender, System.ComponentModel.CancelEventArgs e)
-        {
-            // Open the login/roles window when the user clicks X
-            RolesWindow rolesWindow = new RolesWindow();
-            rolesWindow.WindowStartupLocation = WindowStartupLocation.CenterScreen;
-            rolesWindow.Show();
         }
     }
 }
-

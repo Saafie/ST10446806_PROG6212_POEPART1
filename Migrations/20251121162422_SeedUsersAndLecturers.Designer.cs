@@ -3,6 +3,7 @@ using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using ST10446806_PROG6212_POEPART1.Data;
 
@@ -11,9 +12,11 @@ using ST10446806_PROG6212_POEPART1.Data;
 namespace ST10446806_PROG6212_POEPART1.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    partial class ApplicationDbContextModelSnapshot : ModelSnapshot
+    [Migration("20251121162422_SeedUsersAndLecturers")]
+    partial class SeedUsersAndLecturers
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -31,7 +34,6 @@ namespace ST10446806_PROG6212_POEPART1.Migrations
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("ClaimID"));
 
                     b.Property<decimal>("Amount")
-                        .HasPrecision(18, 2)
                         .HasColumnType("decimal(18,2)");
 
                     b.Property<string>("ApprovedBy")
@@ -59,8 +61,7 @@ namespace ST10446806_PROG6212_POEPART1.Migrations
                         .HasColumnType("datetime2");
 
                     b.Property<decimal>("TotalHours")
-                        .HasPrecision(10, 2)
-                        .HasColumnType("decimal(10,2)");
+                        .HasColumnType("decimal(18,2)");
 
                     b.Property<int>("Year")
                         .HasColumnType("int");
@@ -83,7 +84,6 @@ namespace ST10446806_PROG6212_POEPART1.Migrations
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<decimal>("HourlyRate")
-                        .HasPrecision(18, 2)
                         .HasColumnType("decimal(18,2)");
 
                     b.Property<int>("UserID")
