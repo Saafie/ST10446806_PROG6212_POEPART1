@@ -72,3 +72,29 @@ allowed managers and coordinators to view the documents. when they approved or r
 
 Commit 5
 Added a unit test, and had the document size be restricted, and what type of documents can be uploaded. Had issues with the x button on manger and coordinator window so, removed it to prevent duplicates. Suggest on those pages press log out
+
+Commit 1
+Start Commit Part 3. Added new models so the database can link to the prototype
+
+Commit 2 
+wnd commit. tried fixing up any errors
+
+Commit 3 
+got the prototype to work, with the database storing the information
+
+Commit 4
+Commit 4, added more lecturers, coordinators and managers to the databse and allows to enter any of the 3 users
+
+Commit 5
+5th commit, have the claims that were made stored and then reflected from the database. Claims can only be seen by current lecturers logged in. Claims approved or rejected by 1 coordinator can also be seen by another lecturer
+
+6th commit, linked the database of the coordinator and manager to the whether its approved or not so it gets updated. and automation of validation of claims were added for all 3
+
+7th commit created a new window called HRWindow
+
+8th commit, adjusted the code so that HR can display on the roles screen, as well as be able to login
+
+9th vommit, added some information for phone numbers, emails and banks of the 2 lecturers, and tried making it backup to the database
+
+10th 
+added genereate invoice
