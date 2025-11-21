@@ -34,19 +34,40 @@ namespace ST10446806_PROG6212_POEPART1.Data
 
             // Seed Users
             modelBuilder.Entity<User>().HasData(
-                new User { UserID = 1, FullName = "John Doe", Username = "lecturer1", Password = "1234", Role = UserRole.Lecturer },
-                new User { UserID = 2, FullName = "Sarah Smith", Username = "coordinator1", Password = "1234", Role = UserRole.Coordinator },
-                new User { UserID = 3, FullName = "Michael Brown", Username = "manager1", Password = "1234", Role = UserRole.Manager },
+                new User { UserID = 1, FullName = "Doe Eye", Username = "lecturer1", Password = "1234", Role = UserRole.Lecturer },
+                new User { UserID = 2, FullName = "John Smith", Username = "coordinator1", Password = "1234", Role = UserRole.Coordinator },
+                new User { UserID = 3, FullName = "Michael Jackson", Username = "manager1", Password = "1234", Role = UserRole.Manager },
                 new User { UserID = 4, FullName = "Alice White", Username = "lecturer2", Password = "1234", Role = UserRole.Lecturer },
-                new User { UserID = 5, FullName = "Bob Green", Username = "coordinator2", Password = "1234", Role = UserRole.Coordinator },
-                new User { UserID = 6, FullName = "Carol Black", Username = "manager2", Password = "1234", Role = UserRole.Manager }
+                new User { UserID = 5, FullName = "Miss Piggy", Username = "coordinator2", Password = "1234", Role = UserRole.Coordinator },
+                new User { UserID = 6, FullName = "Linken Black", Username = "manager2", Password = "1234", Role = UserRole.Manager },
+                new User { UserID = 7, FullName = "Emma HR", Username = "hr1", Password = "1234", Role = UserRole.HR },
+                 new User { UserID = 7, FullName = "Kermit Frog", Username = "hr2", Password = "1234", Role = UserRole.HR }
             );
+
+
 
             // Seed LecturerProfiles
             modelBuilder.Entity<LecturerProfile>().HasData(
-                new LecturerProfile { LecturerID = 1, UserID = 1, HourlyRate = 300, BankDetails = "Bank A" },
-                new LecturerProfile { LecturerID = 2, UserID = 4, HourlyRate = 350, BankDetails = "Bank B" }
-            );
+    new LecturerProfile
+    {
+        LecturerID = 1,
+        UserID = 1,
+        HourlyRate = 300,
+        BankDetails = "Bank A",
+        Email = "doe.eye@example.com",
+        PhoneNumber = "1234567890"
+    },
+    new LecturerProfile
+    {
+        LecturerID = 2,
+        UserID = 4,
+        HourlyRate = 350,
+        BankDetails = "Bank B",
+        Email = "jane.doe@example.com",
+        PhoneNumber = "0987654321"
+    }
+);
+
         }
 
 

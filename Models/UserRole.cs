@@ -4,6 +4,7 @@
     {
         Lecturer,
         Coordinator,
-        Manager
+        Manager,
+        HR
     }
 }

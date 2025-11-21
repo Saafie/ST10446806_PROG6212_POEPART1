@@ -4,6 +4,7 @@ using ST10446806_PROG6212_POEPART1.Models;
 using System;
 using System.Windows;
 using System.Windows.Media;
+using static System.Net.Mime.MediaTypeNames;
 
 namespace ST10446806_PROG6212_POEPART1.Windows
 {
@@ -33,7 +34,7 @@ namespace ST10446806_PROG6212_POEPART1.Windows
                     this.Background = new SolidColorBrush(Color.FromRgb(212, 212, 250));
                     break;
                 case "HR":
-                    this.Background = new SolidColorBrush(Color.FromRgb(212, 212, 250));
+                    this.Background = new SolidColorBrush(Color.FromRgb(36, 36, 36);
                     break;
             }
         }
@@ -74,6 +75,9 @@ namespace ST10446806_PROG6212_POEPART1.Windows
                         break;
                     case UserRole.Manager:
                         new ManagerWindow(user).Show();
+                        break;
+                    case UserRole.HR:
+                        new HRWindow(user).Show();
                         break;
                 }
 

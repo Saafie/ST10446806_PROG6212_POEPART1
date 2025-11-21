@@ -14,7 +14,8 @@ namespace ST10446806_PROG6212_POEPART1
     {
         Lecturer,
         Coordinator,
-        Manager
+        Manager,
+        HR
     }
 
     // General user class

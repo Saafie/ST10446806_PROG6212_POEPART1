@@ -11,7 +11,7 @@ namespace ST10446806_PROG6212_POEPART1
         private ApplicationDbContext context;
         private LecturerProfile selectedLecturer;
 
-        public HRWindow()
+        public HRWindow(User user)
         {
             InitializeComponent();
             context = new ApplicationDbContext();
@@ -43,33 +43,68 @@ namespace ST10446806_PROG6212_POEPART1
             }
         }
 
-        // Save changes or new details
+        // Save changes or add a new lecturer
         private void SaveButton_Click(object sender, RoutedEventArgs e)
         {
-            if (selectedLecturer == null)
+            if (string.IsNullOrWhiteSpace(FullNameTextBox.Text))
             {
-                MessageBox.Show("Please select a lecturer first.");
+                MessageBox.Show("Full Name is required.");
                 return;
             }
 
-            // Update fields from TextBoxes
-            selectedLecturer.FullName = FullNameTextBox.Text;
-            selectedLecturer.Email = EmailTextBox.Text;
-            selectedLecturer.PhoneNumber = PhoneTextBox.Text;
+            if (selectedLecturer == null)
+            {
+                // Adding a new lecturer
+                selectedLecturer = new LecturerProfile
+                {
+                    FullName = FullNameTextBox.Text,
+                    Email = EmailTextBox.Text,
+                    PhoneNumber = PhoneTextBox.Text,
+                    BankDetails = BankDetailsTextBox.Text
+                };
 
-            if (decimal.TryParse(HourlyRateTextBox.Text, out decimal rate))
-                selectedLecturer.HourlyRate = rate;
+                if (decimal.TryParse(HourlyRateTextBox.Text, out decimal rate))
+                    selectedLecturer.HourlyRate = rate;
+                else
+                    selectedLecturer.HourlyRate = 0;
+
+                context.LecturerProfiles.Add(selectedLecturer);
+                context.SaveChanges();
+
+                MessageBox.Show("New lecturer added successfully.");
+            }
             else
-                MessageBox.Show("Invalid hourly rate. Keeping previous value.");
+            {
+                // Editing existing lecturer
+                selectedLecturer.FullName = FullNameTextBox.Text;
+                selectedLecturer.Email = EmailTextBox.Text;
+                selectedLecturer.PhoneNumber = PhoneTextBox.Text;
 
-            selectedLecturer.BankDetails = BankDetailsTextBox.Text;
+                if (decimal.TryParse(HourlyRateTextBox.Text, out decimal rate))
+                    selectedLecturer.HourlyRate = rate;
 
-            // Save to database
-            context.LecturerProfiles.Update(selectedLecturer);
-            context.SaveChanges();
+                selectedLecturer.BankDetails = BankDetailsTextBox.Text;
 
-            MessageBox.Show("Lecturer details saved successfully.");
-            LoadLecturers(); // refresh list
+                context.LecturerProfiles.Update(selectedLecturer);
+                context.SaveChanges();
+
+                MessageBox.Show("Lecturer details updated successfully.");
+            }
+
+            // Refresh UI
+            LoadLecturers();
+            ClearFields();
+        }
+
+        private void ClearFields()
+        {
+            FullNameTextBox.Clear();
+            EmailTextBox.Clear();
+            PhoneTextBox.Clear();
+            HourlyRateTextBox.Clear();
+            BankDetailsTextBox.Clear();
+            LecturerListBox.SelectedItem = null;
+            selectedLecturer = null;
         }
 
         // Close DB context when window closes
