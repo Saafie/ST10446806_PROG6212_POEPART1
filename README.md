@@ -73,6 +73,9 @@ allowed managers and coordinators to view the documents. when they approved or r
 Commit 5
 Added a unit test, and had the document size be restricted, and what type of documents can be uploaded. Had issues with the x button on manger and coordinator window so, removed it to prevent duplicates. Suggest on those pages press log out
 
+
+POE 3
+DATABASE FILES ARE ON GITHUB
 Commit 1
 Start Commit Part 3. Added new models so the database can link to the prototype
 
