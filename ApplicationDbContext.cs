@@ -17,16 +17,24 @@ namespace ST10446806_PROG6212_POEPART1.Data
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
-            modelBuilder.Entity<User>().HasKey(u => u.UserID);
-            modelBuilder.Entity<Claim>().HasKey(c => c.ClaimID);
-            modelBuilder.Entity<LecturerProfile>().HasKey(l => l.LecturerID);
-
             // Seed users
             modelBuilder.Entity<User>().HasData(
                 new User { UserID = 1, FullName = "John Doe", Username = "lecturer1", Password = "1234", Role = UserRole.Lecturer },
                 new User { UserID = 2, FullName = "Sarah Smith", Username = "coordinator1", Password = "1234", Role = UserRole.Coordinator },
                 new User { UserID = 3, FullName = "Michael Brown", Username = "manager1", Password = "1234", Role = UserRole.Manager }
             );
+
+            // Specify decimal precision for Claims
+            modelBuilder.Entity<Claim>().Property(c => c.Amount).HasPrecision(18, 2);
+            modelBuilder.Entity<Claim>().Property(c => c.TotalHours).HasPrecision(10, 2);
+
+            // Specify decimal precision for LecturerProfile
+            modelBuilder.Entity<LecturerProfile>().Property(l => l.HourlyRate).HasPrecision(18, 2);
+
+            // Keys
+            modelBuilder.Entity<User>().HasKey(u => u.UserID);
+            modelBuilder.Entity<Claim>().HasKey(c => c.ClaimID);
+            modelBuilder.Entity<LecturerProfile>().HasKey(l => l.LecturerID);
         }
     }
-}
+    }
